@@ -16,6 +16,7 @@ import { BackgroundImage } from "../../../../components/BackgroundImage/Backgrou
 import PrevButton from "../../../PageComponent/PrevButton/PrevButton";
 import Radio from "../../../../components/Radio/src/Radio";
 import RadioButton from "../../../../components/RadioButton/src/RadioButton";
+import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
 
 // tools
 import { objectClone } from "../../../../utils/objectClone";
@@ -56,8 +57,7 @@ export default class DirectiveForce extends React.Component {
     this.setState({ questionInfo: questionInfo });
     // console.log('this_state_questionInfo_',this.state.questionInfo);
   };
-  // 调用radioButton回调函数
-  // radioButton = () => {};
+  // 该模块上一个问题
   goPrev = () => {
     if (this.state.questionIndex === 0) {
       this.jumpWithParameter("forward");
@@ -147,34 +147,17 @@ export default class DirectiveForce extends React.Component {
                 backgroundColor: "#fff",
                 marginTop: dp(50),
                 alignItems: "center"
-              }}>
-              <BackgroundImage
-                source={require("./img/bianhao1.png")}
-                key={4}
-                style={{
-                  width: dp(219),
-                  height: dp(98),
-                  position: "absolute",
-                  top: 0,
-                  left: dp(-20)
-                }}>
-                <Text
-                  style={[
-                    styles.quesNum,
-                    { width: "100%" },
-                    { textAlign: "right" },
-                    { paddingRight: dp(30) }
-                  ]}>
-                  1<Text style={{ fontSize: font(30) }}>/ 19</Text>
-                </Text>
-              </BackgroundImage>
+              }}
+            >
+              <PageOrderCode index={this.state.questionIndex + 1} />
               <View
                 style={{
                   width: dp(800),
                   marginTop: dp(-570),
                   justifyContent: "center",
                   textAlign: "center"
-                }}>
+                }}
+              >
                 <Text style={[styles.questionText, { width: "100%" }]}>
                   今年是哪一年？
                 </Text>
@@ -220,7 +203,8 @@ export default class DirectiveForce extends React.Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 marginTop: dp(60)
-              }}>
+              }}
+            >
               <KeyBoardNumber
                 key={4}
                 onEnsure={this.goNext.bind(this, "thisYear")}
@@ -260,38 +244,22 @@ export default class DirectiveForce extends React.Component {
                   backgroundColor: "#fff",
                   marginTop: dp(50),
                   height: dp(200)
-                }}>
-                <BackgroundImage
-                  source={require("./img/bianhao1.png")}
-                  key={3}
-                  style={{
-                    width: dp(219),
-                    height: dp(98),
-                    position: "absolute",
-                    top: 0,
-                    left: dp(-20)
-                  }}>
-                  <Text
-                    style={[
-                      styles.quesNum,
-                      { width: "100%" },
-                      { textAlign: "right" },
-                      { paddingRight: dp(30) }
-                    ]}>
-                    2<Text style={{ fontSize: font(30) }}>/ 19</Text>
-                  </Text>
-                </BackgroundImage>
+                }}
+              >
+                <PageOrderCode index={this.state.questionIndex + 1} />
                 <View
                   style={{
                     width: dp(1500),
                     marginTop: dp(-570),
                     marginLeft: dp(200)
-                  }}>
+                  }}
+                >
                   <Text
                     style={[
                       styles.questionText,
                       { width: dp(1500), marginTop: dp(20), fontSize: font(60) }
-                    ]}>
+                    ]}
+                  >
                     现在是什么季节？
                   </Text>
                 </View>
@@ -301,7 +269,8 @@ export default class DirectiveForce extends React.Component {
                   alignItems: "center",
                   marginTop: dp(50),
                   marginBottom: dp(50)
-                }}>
+                }}
+              >
                 <View
                   style={{
                     flex: 1,
@@ -323,7 +292,8 @@ export default class DirectiveForce extends React.Component {
                     flexWrap: "nowrap"
                   }}
                   model={this.state.questionInfo["thisSeason"]["answer"]}
-                  onChange={this.keyBoardChange.bind(this, "thisSeason")}>
+                  onChange={this.keyBoardChange.bind(this, "thisSeason")}
+                >
                   {season.map((item, index) => {
                     return (
                       <RadioButton
@@ -373,35 +343,17 @@ export default class DirectiveForce extends React.Component {
                 backgroundColor: "#fff",
                 marginTop: dp(50),
                 alignItems: "center"
-              }}>
-              <BackgroundImage
-                source={require("./img/bianhao1.png")}
-                key={4}
-                style={{
-                  width: dp(219),
-                  height: dp(98),
-                  position: "absolute",
-                  top: 0,
-                  left: dp(-20)
-                }}>
-                <Text
-                  style={[
-                    styles.quesNum,
-                    { width: "100%" },
-                    { textAlign: "right" },
-                    { paddingRight: dp(30) }
-                  ]}>
-                  {3}
-                  <Text style={{ fontSize: font(30) }}>/ 19</Text>
-                </Text>
-              </BackgroundImage>
+              }}
+            >
+              <PageOrderCode index={this.state.questionIndex + 1} />
               <View
                 style={{
                   width: dp(800),
                   marginTop: dp(-570),
                   justifyContent: "center",
                   textAlign: "center"
-                }}>
+                }}
+              >
                 <Text style={[styles.questionText, { width: "100%" }]}>
                   现在是几月？
                 </Text>
@@ -447,7 +399,8 @@ export default class DirectiveForce extends React.Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 marginTop: dp(60)
-              }}>
+              }}
+            >
               <KeyBoardNumber
                 key={4}
                 onEnsure={this.goNext.bind(this, "thisMonth")}
@@ -486,35 +439,17 @@ export default class DirectiveForce extends React.Component {
                 backgroundColor: "#fff",
                 marginTop: dp(50),
                 alignItems: "center"
-              }}>
-              <BackgroundImage
-                source={require("./img/bianhao1.png")}
-                key={4}
-                style={{
-                  width: dp(219),
-                  height: dp(98),
-                  position: "absolute",
-                  top: 0,
-                  left: dp(-20)
-                }}>
-                <Text
-                  style={[
-                    styles.quesNum,
-                    { width: "100%" },
-                    { textAlign: "right" },
-                    { paddingRight: dp(30) }
-                  ]}>
-                  {4}
-                  <Text style={{ fontSize: font(30) }}>/ 19</Text>
-                </Text>
-              </BackgroundImage>
+              }}
+            >
+              <PageOrderCode index={this.state.questionIndex + 1} />
               <View
                 style={{
                   width: dp(800),
                   marginTop: dp(-570),
                   justifyContent: "center",
                   textAlign: "center"
-                }}>
+                }}
+              >
                 <Text style={[styles.questionText, { width: "100%" }]}>
                   今天是几号？
                 </Text>
@@ -560,7 +495,8 @@ export default class DirectiveForce extends React.Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 marginTop: dp(60)
-              }}>
+              }}
+            >
               <KeyBoardNumber
                 key={4}
                 onEnsure={this.goNext.bind(this, "today")}
@@ -596,34 +532,15 @@ export default class DirectiveForce extends React.Component {
           <React.Fragment>
             <View style={{ marginTop: dp(30) }} key={5}>
               <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
-                <BackgroundImage
-                  source={require("./img/bianhao1.png")}
-                  key={3}
-                  style={{
-                    width: dp(219),
-                    height: dp(98),
-                    position: "absolute",
-                    top: 0,
-                    left: dp(-20)
-                  }}>
-                  <Text
-                    style={[
-                      styles.quesNum,
-                      { width: "100%" },
-                      { textAlign: "right" },
-                      { paddingRight: dp(30) }
-                    ]}>
-                    {5}
-                    <Text style={{ fontSize: font(30) }}>/ 19</Text>
-                  </Text>
-                </BackgroundImage>
+                <PageOrderCode index={this.state.questionIndex + 1} />
                 <View
                   style={{
                     flexDirection: "row",
                     width: dp(1500),
                     marginTop: dp(-570),
                     marginLeft: dp(200)
-                  }}>
+                  }}
+                >
                   <Text
                     style={[
                       styles.questionText,
@@ -633,7 +550,8 @@ export default class DirectiveForce extends React.Component {
                         fontSize: font(60),
                         marginTop: dp(20)
                       }
-                    ]}>
+                    ]}
+                  >
                     今天星期几？
                   </Text>
                 </View>
@@ -643,7 +561,8 @@ export default class DirectiveForce extends React.Component {
                   alignItems: "center",
                   marginTop: dp(50),
                   marginBottom: dp(50)
-                }}>
+                }}
+              >
                 <View
                   style={{
                     flex: 1,
@@ -664,7 +583,8 @@ export default class DirectiveForce extends React.Component {
                     flexWrap: "wrap"
                   }}
                   model={this.state.questionInfo["weekDay"]["answer"]}
-                  onChange={this.keyBoardChange.bind(this, "weekDay")}>
+                  onChange={this.keyBoardChange.bind(this, "weekDay")}
+                >
                   {weekDay.map((item, index) => {
                     return (
                       <RadioButton
@@ -709,34 +629,18 @@ export default class DirectiveForce extends React.Component {
         {this.state.questionIndex === 5 && (
           <View key={8} style={{ marginTop: dp(30) }}>
             <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
-              <BackgroundImage
-                source={require("./img/bianhao.png")}
-                key={2}
-                style={{
-                  width: dp(219),
-                  height: dp(98),
-                  position: "absolute",
-                  top: 0,
-                  left: dp(-20)
-                }}>
-                <Text
-                  style={[
-                    styles.quesNum,
-                    { width: "100%" },
-                    { textAlign: "right" },
-                    { paddingRight: dp(30) }
-                  ]}>
-                  {6}
-                  <Text style={{ fontSize: font(30) }}>/ 19</Text>
-                </Text>
-              </BackgroundImage>
+              <PageOrderCode
+                backgroundColor={"green"}
+                index={this.state.questionIndex + 1}
+              />
               <View
                 style={{
                   flexDirection: "row",
                   width: dp(1500),
                   marginTop: dp(-570),
                   marginLeft: dp(200)
-                }}>
+                }}
+              >
                 <Text
                   style={[
                     styles.questionText,
@@ -745,7 +649,8 @@ export default class DirectiveForce extends React.Component {
                       fontSize: font(60),
                       marginLeft: dp(200)
                     }
-                  ]}>
+                  ]}
+                >
                   现在您在哪个省哪个市？
                 </Text>
               </View>
@@ -755,7 +660,8 @@ export default class DirectiveForce extends React.Component {
                 alignItems: "center",
                 marginTop: dp(50),
                 marginBottom: dp(50)
-              }}>
+              }}
+            >
               <View
                 style={{
                   flex: 1,
@@ -786,7 +692,8 @@ export default class DirectiveForce extends React.Component {
                 <View style={styles.tableRow}>
                   <Radio.RadioGroup
                     model={this.state.questionInfo["city"]["answer"]}
-                    onChange={this.keyBoardChange.bind(this, "city")}>
+                    onChange={this.keyBoardChange.bind(this, "city")}
+                  >
                     <View style={[styles.td, { width: dp(600) }]}>
                       <Radio value={1} style={styles.radio} />
                     </View>
@@ -810,6 +717,418 @@ export default class DirectiveForce extends React.Component {
               />
               <PrevButton
                 onPress={this.goNext.bind(this, "city")}
+                text="继续"
+                buttonStyle={{
+                  color: "#656565",
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: dp(50)
+                }}
+                textStyle={{ color: "#656565" }}
+              />
+            </View>
+          </View>
+        )}
+        {this.state.questionIndex === 6 && (
+          <View key={9} style={{ marginTop: dp(30) }}>
+            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
+              <PageOrderCode
+                backgroundColor={"green"}
+                index={this.state.questionIndex + 1}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: dp(1500),
+                  marginTop: dp(-570),
+                  marginLeft: dp(200)
+                }}
+              >
+                <Text
+                  style={[
+                    styles.questionText,
+                    {
+                      marginTop: dp(30),
+                      fontSize: font(60),
+                      marginLeft: dp(280)
+                    }
+                  ]}
+                >
+                  您住在什么区(县)？
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                marginTop: dp(50),
+                marginBottom: dp(50)
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: dp(1500),
+                  borderBottomWidth: dp(1),
+                  borderBottomColor: "#ddd"
+                }}
+              />
+            </View>
+            <View style={styles.table}>
+              <View style={styles.tableColumn1}>
+                <Image
+                  style={{ width: dp(250), height: dp(320) }}
+                  source={require("./img/doctor1.png")}
+                />
+              </View>
+              <View>
+                <View style={styles.tableRow}>
+                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
+                    正确
+                  </Text>
+                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
+                    错误
+                  </Text>
+                </View>
+                <View style={styles.tableRow}>
+                  <Radio.RadioGroup
+                    model={this.state.questionInfo["county"]["answer"]}
+                    onChange={this.keyBoardChange.bind(this, "county")}
+                  >
+                    <View style={[styles.td, { width: dp(600) }]}>
+                      <Radio value={1} style={styles.radio} />
+                    </View>
+                    <View style={[styles.td, { width: dp(600) }]}>
+                      <Radio value={0} style={styles.radio} />
+                    </View>
+                  </Radio.RadioGroup>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ alignItems: "center", marginTop: dp(200) }}>
+              <PrevButton
+                onPress={this.goPrev}
+                text="上一页"
+                buttonStyle={{
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: dp(-330)
+                }}
+              />
+              <PrevButton
+                onPress={this.goNext.bind(this, "county")}
+                text="继续"
+                buttonStyle={{
+                  color: "#656565",
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: dp(50)
+                }}
+                textStyle={{ color: "#656565" }}
+              />
+            </View>
+          </View>
+        )}
+        {this.state.questionIndex === 7 && (
+          <View key={10} style={{ marginTop: dp(30) }}>
+            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
+              <PageOrderCode
+                backgroundColor={"green"}
+                index={this.state.questionIndex + 1}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: dp(1500),
+                  marginTop: dp(-570),
+                  marginLeft: dp(200)
+                }}
+              >
+                <Text
+                  style={[
+                    styles.questionText,
+                    {
+                      marginTop: dp(30),
+                      fontSize: font(60),
+                      marginLeft: dp(280)
+                    }
+                  ]}
+                >
+                  您住在什么街道(乡)？
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                marginTop: dp(50),
+                marginBottom: dp(50)
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: dp(1500),
+                  borderBottomWidth: dp(1),
+                  borderBottomColor: "#ddd"
+                }}
+              />
+            </View>
+            <View style={styles.table}>
+              <View style={styles.tableColumn1}>
+                <Image
+                  style={{ width: dp(250), height: dp(320) }}
+                  source={require("./img/doctor1.png")}
+                />
+              </View>
+              <View>
+                <View style={styles.tableRow}>
+                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
+                    正确
+                  </Text>
+                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
+                    错误
+                  </Text>
+                </View>
+                <View style={styles.tableRow}>
+                  <Radio.RadioGroup
+                    model={this.state.questionInfo["street"]["answer"]}
+                    onChange={this.keyBoardChange.bind(this, "street")}
+                  >
+                    <View style={[styles.td, { width: dp(600) }]}>
+                      <Radio value={1} style={styles.radio} />
+                    </View>
+                    <View style={[styles.td, { width: dp(600) }]}>
+                      <Radio value={0} style={styles.radio} />
+                    </View>
+                  </Radio.RadioGroup>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ alignItems: "center", marginTop: dp(200) }}>
+              <PrevButton
+                onPress={this.goPrev}
+                text="上一页"
+                buttonStyle={{
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: dp(-330)
+                }}
+              />
+              <PrevButton
+                onPress={this.goNext.bind(this, "street")}
+                text="继续"
+                buttonStyle={{
+                  color: "#656565",
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: dp(50)
+                }}
+                textStyle={{ color: "#656565" }}
+              />
+            </View>
+          </View>
+        )}
+        {this.state.questionIndex === 8 && (
+          <View key={11} style={{ marginTop: dp(30) }}>
+            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
+              <PageOrderCode
+                backgroundColor={"green"}
+                index={this.state.questionIndex + 1}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: dp(1500),
+                  marginTop: dp(-570),
+                  marginLeft: dp(200)
+                }}
+              >
+                <Text
+                  style={[
+                    styles.questionText,
+                    {
+                      marginTop: dp(30),
+                      fontSize: font(60),
+                      marginLeft: dp(230)
+                    }
+                  ]}
+                >
+                  我们现在是在第几层楼？
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                marginTop: dp(50),
+                marginBottom: dp(50)
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: dp(1500),
+                  borderBottomWidth: dp(1),
+                  borderBottomColor: "#ddd"
+                }}
+              />
+            </View>
+            <View style={styles.table}>
+              <View style={styles.tableColumn1}>
+                <Image
+                  style={{ width: dp(250), height: dp(320) }}
+                  source={require("./img/doctor1.png")}
+                />
+              </View>
+              <View>
+                <View style={styles.tableRow}>
+                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
+                    正确
+                  </Text>
+                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
+                    错误
+                  </Text>
+                </View>
+                <View style={styles.tableRow}>
+                  <Radio.RadioGroup
+                    model={this.state.questionInfo["floor"]["answer"]}
+                    onChange={this.keyBoardChange.bind(this, "floor")}
+                  >
+                    <View style={[styles.td, { width: dp(600) }]}>
+                      <Radio value={1} style={styles.radio} />
+                    </View>
+                    <View style={[styles.td, { width: dp(600) }]}>
+                      <Radio value={0} style={styles.radio} />
+                    </View>
+                  </Radio.RadioGroup>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ alignItems: "center", marginTop: dp(200) }}>
+              <PrevButton
+                onPress={this.goPrev}
+                text="上一页"
+                buttonStyle={{
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: dp(-330)
+                }}
+              />
+              <PrevButton
+                onPress={this.goNext.bind(this, "floor")}
+                text="继续"
+                buttonStyle={{
+                  color: "#656565",
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: dp(50)
+                }}
+                textStyle={{ color: "#656565" }}
+              />
+            </View>
+          </View>
+        )}
+        {this.state.questionIndex === 9 && (
+          <View key={12} style={{ marginTop: dp(30) }}>
+            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
+              <PageOrderCode
+                backgroundColor={"green"}
+                index={this.state.questionIndex + 1}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: dp(1500),
+                  marginTop: dp(-570),
+                  marginLeft: dp(200)
+                }}
+              >
+                <Text
+                  style={[
+                    styles.questionText,
+                    {
+                      marginTop: dp(30),
+                      fontSize: font(60),
+                      marginLeft: dp(280)
+                    }
+                  ]}
+                >
+                  这儿是什么地方？
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                marginTop: dp(50),
+                marginBottom: dp(50)
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: dp(1500),
+                  borderBottomWidth: dp(1),
+                  borderBottomColor: "#ddd"
+                }}
+              />
+            </View>
+            <View style={styles.table}>
+              <View style={styles.tableColumn1}>
+                <Image
+                  style={{ width: dp(250), height: dp(320) }}
+                  source={require("./img/doctor1.png")}
+                />
+              </View>
+              <View>
+                <View style={styles.tableRow}>
+                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
+                    正确
+                  </Text>
+                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
+                    错误
+                  </Text>
+                </View>
+                <View style={styles.tableRow}>
+                  <Radio.RadioGroup
+                    model={this.state.questionInfo["organization"]["answer"]}
+                    onChange={this.keyBoardChange.bind(this, "organization")}
+                  >
+                    <View style={[styles.td, { width: dp(600) }]}>
+                      <Radio value={1} style={styles.radio} />
+                    </View>
+                    <View style={[styles.td, { width: dp(600) }]}>
+                      <Radio value={0} style={styles.radio} />
+                    </View>
+                  </Radio.RadioGroup>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ alignItems: "center", marginTop: dp(200) }}>
+              <PrevButton
+                onPress={this.goPrev}
+                text="上一页"
+                buttonStyle={{
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: dp(-330)
+                }}
+              />
+              <PrevButton
+                onPress={this.goNext.bind(this, "organization")}
                 text="继续"
                 buttonStyle={{
                   color: "#656565",
