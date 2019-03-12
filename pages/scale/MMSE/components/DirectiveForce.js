@@ -17,6 +17,8 @@ import PrevButton from "../../../PageComponent/PrevButton/PrevButton";
 import Radio from "../../../../components/Radio/src/Radio";
 import RadioButton from "../../../../components/RadioButton/src/RadioButton";
 import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
+import DoctorHelpConfirm from "../../../PageComponent/DoctorHelpConfirm/DoctorHelpConfirm";
+import androidToast from "../../../PageComponent/AndroidToast/AndroidToast";
 
 // tools
 import { objectClone } from "../../../../utils/objectClone";
@@ -41,7 +43,7 @@ export default class DirectiveForce extends React.Component {
       organization: objectClone(answerModel)
     };
     this.state = {
-      questionType: "directiveForce",
+      questionModel: "directiveForce",
       questionIndex: this.props.directionForward ? 0 : 9,
       questionInfo:
         this.props.directiveForce["questionInfo"] === ""
@@ -68,15 +70,19 @@ export default class DirectiveForce extends React.Component {
     });
   };
   goNext = () => {
-    // 表示是否有9个问题, 是否全部结束了
     console.log("this.state.questionIndex_", this.state.questionIndex);
-    const questionTotal = Object.getOwnPropertyNames(this.state.questionInfo)
-      .length;
-    if (this.state.questionIndex === questionTotal - 1) {
+    const questionTotal = Object.getOwnPropertyNames(this.state.questionInfo);
+    // 判断是否为空，为空则return
+    const questionType = questionTotal[this.state.questionIndex];
+    if (this.state.questionInfo[questionType]["answer"] === "") {
+      androidToast("请选择选项");
+      return;
+    }
+    // 表示是否有9个问题, 是否全部结束了
+    if (this.state.questionIndex === questionTotal.length - 1) {
       this.jumpWithParameter("backwards");
       return;
     }
-    console.log("this.state.questionIndex___" + this.state.questionIndex);
     this.setState({
       questionIndex: ++this.state.questionIndex
     });
@@ -84,11 +90,12 @@ export default class DirectiveForce extends React.Component {
   // 不管是跳上一个问题模块，还是下一个问题模块，都进行带参操作
   jumpWithParameter(order) {
     this.props.callBack(
-      this.state.questionType,
+      this.state.questionModel,
       this.state.questionInfo,
       order
     );
   }
+
   render() {
     const season = [
       {
@@ -141,7 +148,7 @@ export default class DirectiveForce extends React.Component {
     return (
       <React.Fragment>
         {this.state.questionIndex === 0 && (
-          <View key={1} style={{ marginTop: dp(30) }}>
+          <View style={{ marginTop: dp(30) }}>
             <View
               style={{
                 backgroundColor: "#fff",
@@ -206,7 +213,6 @@ export default class DirectiveForce extends React.Component {
               }}
             >
               <KeyBoardNumber
-                key={4}
                 onEnsure={this.goNext.bind(this, "thisYear")}
                 onChangeText={this.keyBoardChange.bind(this, "thisYear")}
                 scu={false}
@@ -238,7 +244,7 @@ export default class DirectiveForce extends React.Component {
         )}
         {this.state.questionIndex === 1 && (
           <React.Fragment>
-            <View style={{ marginTop: dp(30) }} key={2}>
+            <View style={{ marginTop: dp(30) }}>
               <View
                 style={{
                   backgroundColor: "#fff",
@@ -337,7 +343,7 @@ export default class DirectiveForce extends React.Component {
           </React.Fragment>
         )}
         {this.state.questionIndex === 2 && (
-          <View key={3} style={{ marginTop: dp(30) }}>
+          <View style={{ marginTop: dp(30) }}>
             <View
               style={{
                 backgroundColor: "#fff",
@@ -402,7 +408,6 @@ export default class DirectiveForce extends React.Component {
               }}
             >
               <KeyBoardNumber
-                key={4}
                 onEnsure={this.goNext.bind(this, "thisMonth")}
                 onChangeText={this.keyBoardChange.bind(this, "thisMonth")}
                 scu={false}
@@ -433,7 +438,7 @@ export default class DirectiveForce extends React.Component {
           </View>
         )}
         {this.state.questionIndex === 3 && (
-          <View key={4} style={{ marginTop: dp(30) }}>
+          <View style={{ marginTop: dp(30) }}>
             <View
               style={{
                 backgroundColor: "#fff",
@@ -498,7 +503,6 @@ export default class DirectiveForce extends React.Component {
               }}
             >
               <KeyBoardNumber
-                key={4}
                 onEnsure={this.goNext.bind(this, "today")}
                 onChangeText={this.keyBoardChange.bind(this, "today")}
                 scu={false}
@@ -530,7 +534,7 @@ export default class DirectiveForce extends React.Component {
         )}
         {this.state.questionIndex === 4 && (
           <React.Fragment>
-            <View style={{ marginTop: dp(30) }} key={5}>
+            <View style={{ marginTop: dp(30) }}>
               <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
                 <PageOrderCode index={this.state.questionIndex + 1} />
                 <View
@@ -627,519 +631,59 @@ export default class DirectiveForce extends React.Component {
           </React.Fragment>
         )}
         {this.state.questionIndex === 5 && (
-          <View key={8} style={{ marginTop: dp(30) }}>
-            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
-              <PageOrderCode
-                backgroundColor={"green"}
-                index={this.state.questionIndex + 1}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: dp(1500),
-                  marginTop: dp(-570),
-                  marginLeft: dp(200)
-                }}
-              >
-                <Text
-                  style={[
-                    styles.questionText,
-                    {
-                      marginTop: dp(30),
-                      fontSize: font(60),
-                      marginLeft: dp(200)
-                    }
-                  ]}
-                >
-                  现在您在哪个省哪个市？
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                alignItems: "center",
-                marginTop: dp(50),
-                marginBottom: dp(50)
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: dp(1500),
-                  borderBottomWidth: dp(1),
-                  borderBottomColor: "#ddd"
-                }}
-              />
-            </View>
-            <View style={styles.table}>
-              <View style={styles.tableColumn1}>
-                <Image
-                  style={{ width: dp(250), height: dp(320) }}
-                  source={require("./img/doctor1.png")}
-                />
-              </View>
-              <View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    正确
-                  </Text>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    错误
-                  </Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Radio.RadioGroup
-                    model={this.state.questionInfo["city"]["answer"]}
-                    onChange={this.keyBoardChange.bind(this, "city")}
-                  >
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={1} style={styles.radio} />
-                    </View>
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={0} style={styles.radio} />
-                    </View>
-                  </Radio.RadioGroup>
-                </View>
-              </View>
-            </View>
-
-            <View style={{ alignItems: "center", marginTop: dp(200) }}>
-              <PrevButton
-                onPress={this.goPrev}
-                text="上一页"
-                buttonStyle={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(-330)
-                }}
-              />
-              <PrevButton
-                onPress={this.goNext.bind(this, "city")}
-                text="继续"
-                buttonStyle={{
-                  color: "#656565",
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(50)
-                }}
-                textStyle={{ color: "#656565" }}
-              />
-            </View>
-          </View>
+          <DoctorHelpConfirm
+            question={"现在您在哪个省哪个市?"}
+            questionType={"city"}
+            questionInfo={this.state.questionInfo}
+            questionIndex={this.state.questionIndex}
+            keyBoardChange={this.keyBoardChange}
+            goPrev={this.goPrev}
+            goNext={this.goNext}
+          />
         )}
         {this.state.questionIndex === 6 && (
-          <View key={9} style={{ marginTop: dp(30) }}>
-            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
-              <PageOrderCode
-                backgroundColor={"green"}
-                index={this.state.questionIndex + 1}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: dp(1500),
-                  marginTop: dp(-570),
-                  marginLeft: dp(200)
-                }}
-              >
-                <Text
-                  style={[
-                    styles.questionText,
-                    {
-                      marginTop: dp(30),
-                      fontSize: font(60),
-                      marginLeft: dp(280)
-                    }
-                  ]}
-                >
-                  您住在什么区(县)？
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                alignItems: "center",
-                marginTop: dp(50),
-                marginBottom: dp(50)
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: dp(1500),
-                  borderBottomWidth: dp(1),
-                  borderBottomColor: "#ddd"
-                }}
-              />
-            </View>
-            <View style={styles.table}>
-              <View style={styles.tableColumn1}>
-                <Image
-                  style={{ width: dp(250), height: dp(320) }}
-                  source={require("./img/doctor1.png")}
-                />
-              </View>
-              <View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    正确
-                  </Text>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    错误
-                  </Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Radio.RadioGroup
-                    model={this.state.questionInfo["county"]["answer"]}
-                    onChange={this.keyBoardChange.bind(this, "county")}
-                  >
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={1} style={styles.radio} />
-                    </View>
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={0} style={styles.radio} />
-                    </View>
-                  </Radio.RadioGroup>
-                </View>
-              </View>
-            </View>
-
-            <View style={{ alignItems: "center", marginTop: dp(200) }}>
-              <PrevButton
-                onPress={this.goPrev}
-                text="上一页"
-                buttonStyle={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(-330)
-                }}
-              />
-              <PrevButton
-                onPress={this.goNext.bind(this, "county")}
-                text="继续"
-                buttonStyle={{
-                  color: "#656565",
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(50)
-                }}
-                textStyle={{ color: "#656565" }}
-              />
-            </View>
-          </View>
+          <DoctorHelpConfirm
+            question={"您住在什么区(县)?"}
+            questionType={"county"}
+            questionInfo={this.state.questionInfo}
+            questionIndex={this.state.questionIndex}
+            keyBoardChange={this.keyBoardChange}
+            goPrev={this.goPrev}
+            goNext={this.goNext}
+          />
         )}
         {this.state.questionIndex === 7 && (
-          <View key={10} style={{ marginTop: dp(30) }}>
-            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
-              <PageOrderCode
-                backgroundColor={"green"}
-                index={this.state.questionIndex + 1}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: dp(1500),
-                  marginTop: dp(-570),
-                  marginLeft: dp(200)
-                }}
-              >
-                <Text
-                  style={[
-                    styles.questionText,
-                    {
-                      marginTop: dp(30),
-                      fontSize: font(60),
-                      marginLeft: dp(280)
-                    }
-                  ]}
-                >
-                  您住在什么街道(乡)？
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                alignItems: "center",
-                marginTop: dp(50),
-                marginBottom: dp(50)
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: dp(1500),
-                  borderBottomWidth: dp(1),
-                  borderBottomColor: "#ddd"
-                }}
-              />
-            </View>
-            <View style={styles.table}>
-              <View style={styles.tableColumn1}>
-                <Image
-                  style={{ width: dp(250), height: dp(320) }}
-                  source={require("./img/doctor1.png")}
-                />
-              </View>
-              <View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    正确
-                  </Text>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    错误
-                  </Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Radio.RadioGroup
-                    model={this.state.questionInfo["street"]["answer"]}
-                    onChange={this.keyBoardChange.bind(this, "street")}
-                  >
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={1} style={styles.radio} />
-                    </View>
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={0} style={styles.radio} />
-                    </View>
-                  </Radio.RadioGroup>
-                </View>
-              </View>
-            </View>
-
-            <View style={{ alignItems: "center", marginTop: dp(200) }}>
-              <PrevButton
-                onPress={this.goPrev}
-                text="上一页"
-                buttonStyle={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(-330)
-                }}
-              />
-              <PrevButton
-                onPress={this.goNext.bind(this, "street")}
-                text="继续"
-                buttonStyle={{
-                  color: "#656565",
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(50)
-                }}
-                textStyle={{ color: "#656565" }}
-              />
-            </View>
-          </View>
+          <DoctorHelpConfirm
+            question={"您住在什么街道(乡)？"}
+            questionType={"street"}
+            questionInfo={this.state.questionInfo}
+            questionIndex={this.state.questionIndex}
+            keyBoardChange={this.keyBoardChange}
+            goPrev={this.goPrev}
+            goNext={this.goNext}
+          />
         )}
         {this.state.questionIndex === 8 && (
-          <View key={11} style={{ marginTop: dp(30) }}>
-            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
-              <PageOrderCode
-                backgroundColor={"green"}
-                index={this.state.questionIndex + 1}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: dp(1500),
-                  marginTop: dp(-570),
-                  marginLeft: dp(200)
-                }}
-              >
-                <Text
-                  style={[
-                    styles.questionText,
-                    {
-                      marginTop: dp(30),
-                      fontSize: font(60),
-                      marginLeft: dp(230)
-                    }
-                  ]}
-                >
-                  我们现在是在第几层楼？
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                alignItems: "center",
-                marginTop: dp(50),
-                marginBottom: dp(50)
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: dp(1500),
-                  borderBottomWidth: dp(1),
-                  borderBottomColor: "#ddd"
-                }}
-              />
-            </View>
-            <View style={styles.table}>
-              <View style={styles.tableColumn1}>
-                <Image
-                  style={{ width: dp(250), height: dp(320) }}
-                  source={require("./img/doctor1.png")}
-                />
-              </View>
-              <View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    正确
-                  </Text>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    错误
-                  </Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Radio.RadioGroup
-                    model={this.state.questionInfo["floor"]["answer"]}
-                    onChange={this.keyBoardChange.bind(this, "floor")}
-                  >
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={1} style={styles.radio} />
-                    </View>
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={0} style={styles.radio} />
-                    </View>
-                  </Radio.RadioGroup>
-                </View>
-              </View>
-            </View>
-
-            <View style={{ alignItems: "center", marginTop: dp(200) }}>
-              <PrevButton
-                onPress={this.goPrev}
-                text="上一页"
-                buttonStyle={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(-330)
-                }}
-              />
-              <PrevButton
-                onPress={this.goNext.bind(this, "floor")}
-                text="继续"
-                buttonStyle={{
-                  color: "#656565",
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(50)
-                }}
-                textStyle={{ color: "#656565" }}
-              />
-            </View>
-          </View>
+          <DoctorHelpConfirm
+            question={"我们现在是在第几层楼？"}
+            questionType={"floor"}
+            questionInfo={this.state.questionInfo}
+            questionIndex={this.state.questionIndex}
+            keyBoardChange={this.keyBoardChange}
+            goPrev={this.goPrev}
+            goNext={this.goNext}
+          />
         )}
         {this.state.questionIndex === 9 && (
-          <View key={12} style={{ marginTop: dp(30) }}>
-            <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
-              <PageOrderCode
-                backgroundColor={"green"}
-                index={this.state.questionIndex + 1}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: dp(1500),
-                  marginTop: dp(-570),
-                  marginLeft: dp(200)
-                }}
-              >
-                <Text
-                  style={[
-                    styles.questionText,
-                    {
-                      marginTop: dp(30),
-                      fontSize: font(60),
-                      marginLeft: dp(280)
-                    }
-                  ]}
-                >
-                  这儿是什么地方？
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                alignItems: "center",
-                marginTop: dp(50),
-                marginBottom: dp(50)
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: dp(1500),
-                  borderBottomWidth: dp(1),
-                  borderBottomColor: "#ddd"
-                }}
-              />
-            </View>
-            <View style={styles.table}>
-              <View style={styles.tableColumn1}>
-                <Image
-                  style={{ width: dp(250), height: dp(320) }}
-                  source={require("./img/doctor1.png")}
-                />
-              </View>
-              <View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    正确
-                  </Text>
-                  <Text style={[styles.th, { width: dp(600) }, styles.tdb]}>
-                    错误
-                  </Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Radio.RadioGroup
-                    model={this.state.questionInfo["organization"]["answer"]}
-                    onChange={this.keyBoardChange.bind(this, "organization")}
-                  >
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={1} style={styles.radio} />
-                    </View>
-                    <View style={[styles.td, { width: dp(600) }]}>
-                      <Radio value={0} style={styles.radio} />
-                    </View>
-                  </Radio.RadioGroup>
-                </View>
-              </View>
-            </View>
-
-            <View style={{ alignItems: "center", marginTop: dp(200) }}>
-              <PrevButton
-                onPress={this.goPrev}
-                text="上一页"
-                buttonStyle={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(-330)
-                }}
-              />
-              <PrevButton
-                onPress={this.goNext.bind(this, "organization")}
-                text="继续"
-                buttonStyle={{
-                  color: "#656565",
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(50)
-                }}
-                textStyle={{ color: "#656565" }}
-              />
-            </View>
-          </View>
+          <DoctorHelpConfirm
+            question={"这儿是什么地方？"}
+            questionType={"organization"}
+            questionInfo={this.state.questionInfo}
+            questionIndex={this.state.questionIndex}
+            keyBoardChange={this.keyBoardChange}
+            goPrev={this.goPrev}
+            goNext={this.goNext}
+          />
         )}
       </React.Fragment>
     );
@@ -1148,16 +692,6 @@ export default class DirectiveForce extends React.Component {
 
 const BASE_COLOR = "#479e13";
 const styles = StyleSheet.create({
-  baseColor: {
-    color: BASE_COLOR
-  },
-  questionContainer: {
-    backgroundColor: "#406dce",
-    minHeight: dp(250),
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
-  },
   radio: {
     width: dp(50),
     height: dp(50)
@@ -1166,35 +700,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f2f9fd"
   },
-  questions: {
-    backgroundColor: "#406ece",
-    minHeight: dp(200),
-    alignItems: "center"
-  },
   questionText: {
-    color: "#ffffff",
     fontSize: font(60),
     paddingTop: dp(30),
-    paddingBottom: dp(30)
-  },
-  quesNum: {
-    fontSize: font(40),
-    color: "#ffffff",
-    marginRight: dp(20),
-    position: "absolute",
-    left: dp(20),
-    top: dp(20)
-  },
-  backButton: {
-    width: dp(351),
-    height: dp(80),
-    borderWidth: dp(3),
-    borderColor: "#f0b22b",
-    backgroundColor: "#ffffff",
-    borderRadius: dp(10),
-    marginRight: dp(194),
-    justifyContent: "center",
-    alignItems: "center"
+    paddingBottom: dp(30),
+    width: dp(1200),
+    color: "#2c2c2c",
+    lineHeight: dp(88),
+    marginLeft: dp(41),
+    paddingRight: dp(80),
+    fontWeight: "100",
+    textAlign: "center"
   },
   table: {
     flexDirection: "row"
@@ -1221,16 +737,6 @@ const styles = StyleSheet.create({
   },
   tableThText: {
     fontSize: font(40)
-  },
-  baseColor: {
-    color: BASE_COLOR
-  },
-  questionContainer: {
-    backgroundColor: "#406dce",
-    minHeight: dp(250),
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
   },
   table: {
     flexDirection: "row",
@@ -1273,43 +779,5 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     borderWidth: dp(0.5),
     borderColor: BASE_COLOR
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff"
-  },
-  questions: {
-    backgroundColor: "#406ece",
-    minHeight: dp(200),
-    alignItems: "center"
-  },
-  questionText: {
-    width: dp(1200),
-    color: "#2c2c2c",
-    fontSize: font(60),
-    lineHeight: dp(88),
-    marginLeft: dp(41),
-    paddingRight: dp(80),
-    fontWeight: "100",
-    textAlign: "center"
-  },
-  questionText1: {
-    color: "#2c2c2c",
-    fontSize: font(60)
-  },
-  quesNum: {
-    fontSize: font(60),
-    color: "#ffffff"
-  },
-  backButton: {
-    width: dp(351),
-    height: dp(80),
-    borderWidth: dp(3),
-    borderColor: "#f0b22b",
-    backgroundColor: "#ffffff",
-    borderRadius: dp(10),
-    marginRight: dp(194),
-    justifyContent: "center",
-    alignItems: "center"
   }
 });
