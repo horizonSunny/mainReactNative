@@ -3,6 +3,7 @@ import PageOrderCode from "../PageOrderCode/PageOrderCode";
 import { Image } from "react-native/Libraries/Animated/src/Animated";
 import PrevButton from "../../PageComponent/PrevButton/PrevButton";
 import Radio from "../../../components/Radio/src/Radio";
+import FrontAndBack from "../../PageComponent/frontAndBack/frontAndBack";
 import React from "react";
 
 export default class DoctorHelpConfirm extends React.Component {
@@ -93,29 +94,13 @@ export default class DoctorHelpConfirm extends React.Component {
             </View>
           </View>
         </View>
-
-        <View style={{ alignItems: "center", marginTop: dp(200) }}>
-          <PrevButton
-            onPress={this.props.goPrev}
-            text="上一页"
-            buttonStyle={{
-              position: "absolute",
-              left: "50%",
-              marginLeft: dp(-330)
-            }}
-          />
-          <PrevButton
-            onPress={this.props.goNext.bind(this, this.props.questionInfo)}
-            text="继续"
-            buttonStyle={{
-              color: "#656565",
-              position: "absolute",
-              left: "50%",
-              marginLeft: dp(50)
-            }}
-            textStyle={{ color: "#656565" }}
-          />
-        </View>
+        <View
+          style={{
+            marginTop: dp(50),
+            marginBottom: dp(50)
+          }}
+        />
+        <FrontAndBack goNext={this.props.goNext} goPrev={this.props.goPrev} />
       </View>
     );
   }
@@ -172,7 +157,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   table: {
-    flexDirection: "row"
+    flexDirection: "row",
+    marginBottom: dp(50)
   },
   tableRow: {
     flex: 1,

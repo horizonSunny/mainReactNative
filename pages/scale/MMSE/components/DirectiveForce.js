@@ -14,11 +14,13 @@ import { Image } from "react-native/Libraries/Animated/src/Animated";
 import KeyBoardNumber from "../../../../components/tools/KeyBoardNumber";
 import { BackgroundImage } from "../../../../components/BackgroundImage/BackgroundImage";
 import PrevButton from "../../../PageComponent/PrevButton/PrevButton";
+import FrontAndBack from "../../../PageComponent/frontAndBack/frontAndBack";
 import Radio from "../../../../components/Radio/src/Radio";
 import RadioButton from "../../../../components/RadioButton/src/RadioButton";
 import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
 import DoctorHelpConfirm from "../../../PageComponent/DoctorHelpConfirm/DoctorHelpConfirm";
 import androidToast from "../../../PageComponent/AndroidToast/AndroidToast";
+import * as commonFunction from "../../../PageComponent/commonFunction/commonFunction";
 
 // tools
 import { objectClone } from "../../../../utils/objectClone";
@@ -44,12 +46,31 @@ export default class DirectiveForce extends React.Component {
     };
     this.state = {
       questionModel: "directiveForce",
-      questionIndex: this.props.directionForward ? 0 : 9,
-      questionInfo:
-        this.props.directiveForce["questionInfo"] === ""
-          ? questionInfo
-          : this.props.directiveForce["questionInfo"]
+      questionIndex: this.props.directionForward ? 9 : 0
     };
+  }
+  componentWillMount() {
+    let answerModel = {
+      score: 0,
+      answer: ""
+    };
+    let questionInfo = {
+      thisYear: objectClone(answerModel),
+      thisSeason: objectClone(answerModel),
+      thisMonth: objectClone(answerModel),
+      today: objectClone(answerModel),
+      weekDay: objectClone(answerModel),
+      city: objectClone(answerModel),
+      county: objectClone(answerModel),
+      street: objectClone(answerModel),
+      floor: objectClone(answerModel),
+      organization: objectClone(answerModel)
+    };
+    if (this.props.questionModel["questionInfo"] === "") {
+      this.setState({ questionInfo: questionInfo });
+    } else {
+      this.setState({ questionInfo: this.props.questionModel["questionInfo"] });
+    }
   }
   // 调用keyboard回调的方法
   keyBoardChange = (key, value) => {
@@ -62,7 +83,8 @@ export default class DirectiveForce extends React.Component {
   // 该模块上一个问题
   goPrev = () => {
     if (this.state.questionIndex === 0) {
-      this.jumpWithParameter("forward");
+      // this.jumpWithParameter("forward");
+      commonFunction.jumpWithParameter("forward", this.state, this.props);
       return;
     }
     this.setState({
@@ -80,7 +102,7 @@ export default class DirectiveForce extends React.Component {
     }
     // 表示是否有9个问题, 是否全部结束了
     if (this.state.questionIndex === questionTotal.length - 1) {
-      this.jumpWithParameter("backwards");
+      commonFunction.jumpWithParameter("backwards", this.state, this.props);
       return;
     }
     this.setState({
@@ -88,13 +110,14 @@ export default class DirectiveForce extends React.Component {
     });
   };
   // 不管是跳上一个问题模块，还是下一个问题模块，都进行带参操作
-  jumpWithParameter(order) {
-    this.props.callBack(
-      this.state.questionModel,
-      this.state.questionInfo,
-      order
-    );
-  }
+  // jumpWithParameter(order) {
+  //   console.log("have_in_jumpWithParameter");
+  //   this.props.callBack(
+  //     this.state.questionModel,
+  //     this.state.questionInfo,
+  //     order
+  //   );
+  // }
 
   render() {
     const season = [
@@ -218,28 +241,7 @@ export default class DirectiveForce extends React.Component {
                 scu={false}
               />
             </View>
-            <View style={{ alignItems: "center" }}>
-              <PrevButton
-                onPress={this.goPrev}
-                text="上一页"
-                buttonStyle={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(-330)
-                }}
-              />
-              <PrevButton
-                onPress={this.goNext.bind(this, "thisYear")}
-                text="继续"
-                buttonStyle={{
-                  color: "#656565",
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: 50
-                }}
-                textStyle={{ color: "#656565" }}
-              />
-            </View>
+            <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
           </View>
         )}
         {this.state.questionIndex === 1 && (
@@ -317,28 +319,7 @@ export default class DirectiveForce extends React.Component {
                   })}
                 </RadioButton.RadioButtonGroup>
               </View>
-              <View style={{ alignItems: "center", marginTop: 70 }}>
-                <PrevButton
-                  onPress={this.goPrev}
-                  text="上一页"
-                  buttonStyle={{
-                    position: "absolute",
-                    left: "50%",
-                    marginLeft: dp(-330)
-                  }}
-                />
-                <PrevButton
-                  onPress={this.goNext.bind(this, "thisSeason")}
-                  text="继续"
-                  buttonStyle={{
-                    color: "#656565",
-                    position: "absolute",
-                    left: "50%",
-                    marginLeft: dp(50)
-                  }}
-                  textStyle={{ color: "#656565" }}
-                />
-              </View>
+              <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
             </View>
           </React.Fragment>
         )}
@@ -413,28 +394,7 @@ export default class DirectiveForce extends React.Component {
                 scu={false}
               />
             </View>
-            <View style={{ alignItems: "center" }}>
-              <PrevButton
-                onPress={this.goPrev}
-                text="上一页"
-                buttonStyle={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(-330)
-                }}
-              />
-              <PrevButton
-                onPress={this.goNext.bind(this, "thisMonth")}
-                text="继续"
-                buttonStyle={{
-                  color: "#656565",
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(50)
-                }}
-                textStyle={{ color: "#656565" }}
-              />
-            </View>
+            <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
           </View>
         )}
         {this.state.questionIndex === 3 && (
@@ -508,28 +468,7 @@ export default class DirectiveForce extends React.Component {
                 scu={false}
               />
             </View>
-            <View style={{ alignItems: "center" }}>
-              <PrevButton
-                onPress={this.goPrev}
-                text="上一页"
-                buttonStyle={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(-330)
-                }}
-              />
-              <PrevButton
-                onPress={this.goNext.bind(this, "today")}
-                text="继续"
-                buttonStyle={{
-                  color: "#656565",
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: dp(50)
-                }}
-                textStyle={{ color: "#656565" }}
-              />
-            </View>
+            <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
           </View>
         )}
         {this.state.questionIndex === 4 && (
@@ -605,28 +544,7 @@ export default class DirectiveForce extends React.Component {
                   })}
                 </RadioButton.RadioButtonGroup>
               </View>
-              <View style={{ alignItems: "center", marginTop: 70 }}>
-                <PrevButton
-                  onPress={this.goPrev}
-                  text="上一页"
-                  buttonStyle={{
-                    position: "absolute",
-                    left: "50%",
-                    marginLeft: dp(-330)
-                  }}
-                />
-                <PrevButton
-                  onPress={this.goNext.bind(this, "weekDay")}
-                  text="继续"
-                  buttonStyle={{
-                    color: "#656565",
-                    position: "absolute",
-                    left: "50%",
-                    marginLeft: dp(50)
-                  }}
-                  textStyle={{ color: "#656565" }}
-                />
-              </View>
+              <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
             </View>
           </React.Fragment>
         )}
