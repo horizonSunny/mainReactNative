@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TextInput,
+  TouchableOpacity,
   ToastAndroid,
   Modal,
   TouchableNativeFeedback,
@@ -12,251 +13,149 @@ import {
 
 import { Image } from "react-native/Libraries/Animated/src/Animated";
 import KeyBoardNumber from "../../../../components/tools/KeyBoardNumber";
+import androidToast from "../../../PageComponent/AndroidToast/AndroidToast";
+import { objectClone } from "../../../../utils/objectClone";
+import * as commonFunction from "../../../PageComponent/commonFunction/commonFunction";
 
 export default class CalculAteattention extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      reduceSeven: 5,
+      questionModel: "calculAteattention",
+      questionIndex: 0
+    };
+  }
+  componentWillMount() {
     let answerModel = {
       score: 0,
       answer: ""
     };
     let questionInfo = {
-      ball: objectClone(answerModel),
-      nationalFlag: objectClone(answerModel),
-      trees: objectClone(answerModel)
+      ninetyThree: objectClone(answerModel),
+      eightySix: objectClone(answerModel),
+      seventyNine: objectClone(answerModel),
+      seventyTwo: objectClone(answerModel),
+      sixtyFive: objectClone(answerModel)
     };
-    // 该问题模块下的该问题
-    this.state = {
-      reduceSeven: 5,
-      questionModel: "calculAteattention",
-      questionIndex: 0,
-      questionInfo:
-        this.props.calculAteattention["questionInfo"] === ""
-          ? questionInfo
-          : this.props.calculAteattention["calculAteattention"]
-    };
-    this.onChange = this.onChange.bind(this);
+
+    if (this.props.questionModel["questionInfo"] === "") {
+      this.setState({ questionInfo: questionInfo });
+    } else {
+      this.setState({ questionInfo: this.props.questionModel["questionInfo"] });
+    }
+    // console.log('this.state.questionInfo_calcul_',this.state.questionInfo);
+    const questionArr = Object.keys(questionInfo);
+    this.setState({ questionArr: questionArr });
   }
   /**
    * @description 表示下一次减法运算
    */
   goNext = () => {
-    const noEmpty =
-      (this.state.reduceSeven === 5 && this.state.answers.mmse12s1 === "") ||
-      (this.state.reduceSeven === 4 && this.state.answers.mmse12s2 === "") ||
-      (this.state.reduceSeven === 3 && this.state.answers.mmse12s3 === "") ||
-      (this.state.reduceSeven === 2 && this.state.answers.mmse12s4 === "") ||
-      (this.state.reduceSeven === 1 && this.state.answers.mmse12s5 === "");
+    console.log("goNext!!!");
+    console.log("this.state.questionInfo_", this.state.questionInfo);
+    const questionCurrent = this.state.questionArr[5 - this.state.reduceSeven];
+    const noEmpty = this.state.questionInfo[questionCurrent]["answer"] === "";
     if (noEmpty) {
-      ToastAndroid.show("请选择选项", ToastAndroid.SHORT);
+      androidToast("请选择选项");
       return;
-    }
-    console.log("this.state.reduceSeven_next_" + this.state.reduceSeven);
-    if (this.state.reduceSeven > 1) {
-      let _this = this;
-      _this.setState({
-        reduceSeven: _this.state.reduceSeven - 1
-      });
-      setTimeout(() => {
-        console.log("reduceSeven_>1__" + this.state.reduceSeven);
-      }, 1000);
     } else {
-      setTimeout(() => {
-        console.log("reduceSeven_<1_" + this.state.reduceSeven);
-      }, 1000);
-      this.goNextPage();
+      this.catchFocus();
+      if (this.state.reduceSeven > 1) {
+        this.setState({
+          reduceSeven: this.state.reduceSeven - 1
+        });
+      } else {
+        // for (let item in this.state.questionInfo) {
+        //   if (item.answer === "") {
+        //     androidToast("请选择选项");
+        //     return;
+        //   }
+        // }
+        commonFunction.jumpWithParameter("backwards", this.state, this.props);
+      }
     }
   };
-  /**
-   * @description goto next page,如果不是箭头函数，则需要在constrctor 绑定this
-   */
-  goNextPage = () => {
-    this.props.callbackReduce(this.state.answers);
+  // saveAndClear(){
+
+  // }
+  keyBoardChange = (key, value) => {
+    let questionInfo = this.state.questionInfo;
+    questionInfo[key]["answer"] = value;
+    this.setState({ questionInfo: questionInfo });
   };
-  onChange = (key, value) => {
-    let answers = this.state.answers;
-    if (this.state.reduceSeven === 5) {
-      answers.mmse12s1 = value;
-    } else if (this.state.reduceSeven === 4) {
-      answers.mmse12s2 = value;
-    } else if (this.state.reduceSeven === 3) {
-      answers.mmse12s3 = value;
-    } else if (this.state.reduceSeven === 2) {
-      answers.mmse12s4 = value;
-    } else if (this.state.reduceSeven === 1) {
-      answers.mmse12s5 = value;
+  catchFocus = () => {
+    let index = 5 - this.state.reduceSeven + 1;
+    item = this.state.questionArr[index];
+    switch (item) {
+      case "ninetyThree":
+        this.refs.ninetyThree.focus();
+        break;
+      case "eightySix":
+        this.refs.eightySix.focus();
+        break;
+      case "seventyNine":
+        this.refs.seventyNine.focus();
+        break;
+      case "seventyTwo":
+        this.refs.seventyTwo.focus();
+        break;
+      case "sixtyFive":
+        this.refs.sixtyFive.focus();
+        break;
+      default:
+        this.refs.ninetyThree.focus();
+        break;
     }
-    this.setState({ answers: answers });
   };
+
   reduce() {
     // if(this.state.reduceSeven === 5){
     return (
       <React.Fragment>
-        {this.state.reduceSeven > 4 && (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              marginTop: dp(45)
-            }}
-          >
-            <Image
-              source={require("./img/xh.png")}
+        {this.state.questionArr.map(item => {
+          return (
+            <View
+              key={item}
               style={{
-                width: dp(40),
-                height: dp(40),
-                marginTop: dp(25),
-                marginRight: dp(45)
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginTop: dp(45)
               }}
-            />
-            <Text style={{ fontSize: font(60) }}>100-7=</Text>
-            <TextInput
-              textContentType="telephoneNumber"
-              placeholderTextColor="#434343"
-              keyboardType="number-pad"
-              style={{
-                width: dp(300),
-                height: dp(100),
-                borderColor: "#444444",
-                borderWidth: dp(1),
-                fontSize: font(60),
-                textAlign: "center",
-                color: "#434343",
-                backgroundColor: "#fff",
-                padding: dp(0),
-                lineHeight: dp(100)
-              }}
-              disabled={true}
-              editable={false}
-              value={this.state.answers.mmse12s1}
-            />
-          </View>
-        )}
-        {this.state.reduceSeven <= 4 && <View style={{ height: dp(150) }} />}
-        {this.state.reduceSeven > 3 && (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              marginTop: dp(45)
-            }}
-          >
-            <Text style={{ fontSize: font(60) }}>继续减7=</Text>
-            <TextInput
-              textContentType="telephoneNumber"
-              placeholderTextColor="#434343"
-              keyboardType="number-pad"
-              style={{
-                width: dp(300),
-                height: dp(100),
-                borderColor: "#444444",
-                borderWidth: dp(1),
-                fontSize: font(60),
-                textAlign: "center",
-                color: "#434343",
-                backgroundColor: "#fff",
-                padding: dp(0),
-                lineHeight: dp(100)
-              }}
-              disabled={true}
-              editable={false}
-              value={this.state.answers.mmse12s2}
-            />
-          </View>
-        )}
-        {this.state.reduceSeven > 2 && (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              marginTop: dp(45)
-            }}
-          >
-            <Text style={{ fontSize: font(60) }}>继续减7=</Text>
-            <TextInput
-              textContentType="telephoneNumber"
-              placeholderTextColor="#434343"
-              keyboardType="number-pad"
-              style={{
-                width: dp(300),
-                height: dp(100),
-                borderColor: "#444444",
-                borderWidth: dp(1),
-                fontSize: font(60),
-                textAlign: "center",
-                color: "#434343",
-                backgroundColor: "#fff",
-                padding: dp(0),
-                lineHeight: dp(100)
-              }}
-              disabled={true}
-              editable={false}
-              value={this.state.answers.mmse12s3}
-            />
-          </View>
-        )}
-        {this.state.reduceSeven > 1 && (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              marginTop: dp(45)
-            }}
-          >
-            <Text style={{ fontSize: font(60) }}>继续减7=</Text>
-            <TextInput
-              textContentType="telephoneNumber"
-              placeholderTextColor="#434343"
-              keyboardType="number-pad"
-              style={{
-                width: dp(300),
-                height: dp(100),
-                borderColor: "#444444",
-                borderWidth: dp(1),
-                fontSize: font(60),
-                textAlign: "center",
-                color: "#434343",
-                backgroundColor: "#fff",
-                padding: dp(0),
-                lineHeight: dp(100)
-              }}
-              disabled={true}
-              editable={false}
-              value={this.state.answers.mmse12s4}
-            />
-          </View>
-        )}
-        {this.state.reduceSeven > 0 && (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              marginTop: dp(45)
-            }}
-          >
-            <Text style={{ fontSize: font(60) }}>继续减7=</Text>
-            <TextInput
-              textContentType="telephoneNumber"
-              placeholderTextColor="#434343"
-              keyboardType="number-pad"
-              style={{
-                width: dp(300),
-                height: dp(100),
-                borderColor: "#444444",
-                borderWidth: dp(1),
-                fontSize: font(60),
-                textAlign: "center",
-                color: "#434343",
-                backgroundColor: "#fff",
-                padding: dp(0),
-                lineHeight: dp(100)
-              }}
-              disabled={true}
-              editable={false}
-              value={this.state.answers.mmse12s5}
-            />
-          </View>
-        )}
+            >
+              <Text style={{ fontSize: font(60) }}>
+                {item === "ninetyThree" ? "100-7:" : "继续减7:"}
+              </Text>
+              <TextInput
+                ref={item}
+                placeholderTextColor="#434343"
+                keyboardType="number-pad"
+                style={{
+                  width: dp(300),
+                  height: dp(100),
+                  borderColor: "#444444",
+                  borderWidth: dp(1),
+                  fontSize: font(60),
+                  textAlign: "center",
+                  color: "#434343",
+                  backgroundColor: "#fff",
+                  padding: dp(0),
+                  lineHeight: dp(100)
+                }}
+                value={this.state.questionInfo[item]["answer"]}
+                onFocus={() => {
+                  this.setState({
+                    reduceSeven: 5 - this.state.questionArr.indexOf(item)
+                  });
+                }}
+                autoFocus={item === "ninetyThree"}
+                onBlur={() => {
+                  this.refs.refKeyBoard.saveAndClear();
+                }}
+              />
+            </View>
+          );
+        })}
       </React.Fragment>
     );
   }
@@ -268,10 +167,14 @@ export default class CalculAteattention extends React.Component {
         </View>
         <View style={{ width: "50%" }}>
           <KeyBoardNumber
+            ref="refKeyBoard"
             key={7}
             style={{ marginTop: dp(200) }}
             onEnsure={this.goNext}
-            onChangeText={this.onChange.bind(this, "mmse12s1")}
+            onChangeText={this.keyBoardChange.bind(
+              this,
+              this.state.questionArr[5 - this.state.reduceSeven]
+            )}
             scu={false}
           />
         </View>
