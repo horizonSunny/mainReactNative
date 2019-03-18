@@ -24,6 +24,12 @@ import * as commonFunction from "../../../PageComponent/commonFunction/commonFun
 
 // tools
 import { objectClone } from "../../../../utils/objectClone";
+import {
+  getYear,
+  getMonth,
+  getToday,
+  getWeek
+} from "../../../../utils/getDate";
 
 export default class DirectiveForce extends React.Component {
   constructor(props) {
@@ -31,18 +37,6 @@ export default class DirectiveForce extends React.Component {
     let answerModel = {
       score: 0,
       answer: ""
-    };
-    let questionInfo = {
-      thisYear: objectClone(answerModel),
-      thisSeason: objectClone(answerModel),
-      thisMonth: objectClone(answerModel),
-      today: objectClone(answerModel),
-      weekDay: objectClone(answerModel),
-      city: objectClone(answerModel),
-      county: objectClone(answerModel),
-      street: objectClone(answerModel),
-      floor: objectClone(answerModel),
-      organization: objectClone(answerModel)
     };
     this.state = {
       questionModel: "directiveForce",
@@ -92,7 +86,8 @@ export default class DirectiveForce extends React.Component {
     });
   };
   goNext = () => {
-    console.log("this.state.questionIndex_", this.state.questionIndex);
+    this.calculateScore();
+    // console.log("this.state.questionIndex_", this.state.questionIndex);
     const questionTotal = Object.getOwnPropertyNames(this.state.questionInfo);
     // 判断是否为空，为空则return
     const questionType = questionTotal[this.state.questionIndex];
@@ -102,6 +97,7 @@ export default class DirectiveForce extends React.Component {
     }
     // 表示是否有9个问题, 是否全部结束了
     if (this.state.questionIndex === questionTotal.length - 1) {
+      this.calculateScore();
       commonFunction.jumpWithParameter("backwards", this.state, this.props);
       return;
     }
@@ -109,15 +105,61 @@ export default class DirectiveForce extends React.Component {
       questionIndex: ++this.state.questionIndex
     });
   };
-  // 不管是跳上一个问题模块，还是下一个问题模块，都进行带参操作
-  // jumpWithParameter(order) {
-  //   console.log("have_in_jumpWithParameter");
-  //   this.props.callBack(
-  //     this.state.questionModel,
-  //     this.state.questionInfo,
-  //     order
-  //   );
-  // }
+
+  /**
+   * @description 一句answer计算分数
+   */
+
+  calculateScore() {
+    const year = getYear();
+    const month = getMonth();
+    const today = getToday();
+    const week = getWeek();
+    let season;
+    if (month <= 2) {
+      season = month + 12;
+    } else {
+      season = month;
+    }
+    let questionInfo = objectClone(this.state.questionInfo);
+    console.log("questionInfo_clone_", questionInfo);
+    // return;
+    console.log(
+      "year_" + year + "_month_" + month + "_today_" + today + "_week_" + week
+    );
+    season = season - (parseInt(questionInfo["thisSeason"]["anwer"]) * 3 + 3);
+    // 2.算季节
+    questionInfo["thisSeason"]["score"] = season >= 0 && season < 3 ? 1 : 0;
+    // 1.年份
+    questionInfo["thisYear"]["score"] =
+      parseInt(questionInfo["thisYear"]["answer"]) == parseInt(year) ? 1 : 0;
+    console.log(
+      'parseInt(questionInfo["thisYear"]["anwer"]) _',
+      parseInt(questionInfo.thisYear.answer)
+    );
+    // 3.月份
+    questionInfo["thisMonth"]["score"] = 0;
+    // parseInt(questionInfo["thisMonth"]["anwer"]) === month ? 0 : 1;
+    // 4.几号
+    questionInfo["today"]["score"] =
+      parseInt(questionInfo["today"]["anwer"]) === today ? 1 : 0;
+    // 5.星期几
+    questionInfo["weekDay"]["score"] =
+      parseInt(questionInfo["weekDay"]["anwer"]) === week ? 1 : 0;
+    // // 6.住在那个城市
+    // questionInfo["city"]["score"] = Number(questionInfo["city"]["anwer"]);
+    // // 7.住在什么区县
+    // questionInfo["county"]["score"] = Number(questionInfo["county"]["anwer"]);
+    // // 8.住在什么街道
+    // questionInfo["street"]["score"] = Number(questionInfo["street"]["anwer"]);
+    // // 9.在第几层楼
+    // questionInfo["floor"]["score"] = Number(questionInfo["floor"]["anwer"]);
+    // 10.这是什么单位
+    questionInfo["organization"]["score"] = Number(
+      questionInfo["organization"]["anwer"]
+    );
+    console.log("questionInfo_core_", questionInfo);
+  }
 
   render() {
     const season = [
@@ -544,6 +586,7 @@ export default class DirectiveForce extends React.Component {
                   })}
                 </RadioButton.RadioButtonGroup>
               </View>
+              <View style={{ alignItems: "center", marginTop: dp(150) }} />
               <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
             </View>
           </React.Fragment>

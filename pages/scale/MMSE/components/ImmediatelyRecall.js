@@ -12,6 +12,7 @@ import {
 
 import { Image } from "react-native/Libraries/Animated/src/Animated";
 import { BackgroundImage } from "../../../../components/BackgroundImage/BackgroundImage";
+import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
 import Radio from "../../../../components/Radio/src/Radio";
 import Audio from "../../../../components/Audio/Audio";
 import FrontAndBack from "../../../PageComponent/frontAndBack/frontAndBack";
@@ -29,7 +30,7 @@ export default class ImmediatelyRecall extends React.Component {
     );
     this.state = {
       questionModel: "ImmediatelyRecall",
-      questionIndex: 0
+      questionIndex: 10
     };
   }
   componentWillMount() {
@@ -85,28 +86,10 @@ export default class ImmediatelyRecall extends React.Component {
             marginTop: dp(50)
           }}
         >
-          <BackgroundImage
-            source={require("./img/bianhao.png")}
-            style={{
-              width: dp(219),
-              height: dp(98),
-              position: "absolute",
-              top: 0,
-              left: dp(-20)
-            }}
-          >
-            <Text
-              style={[
-                styles.quesNum,
-                { width: "100%" },
-                { textAlign: "right" },
-                { paddingRight: dp(30) }
-              ]}
-            >
-              {11}
-              <Text style={{ fontSize: font(30) }}>/ 19</Text>
-            </Text>
-          </BackgroundImage>
+          <PageOrderCode
+            backgroundColor={"green"}
+            index={this.state.questionIndex + 1}
+          />
           <View
             style={{
               flexDirection: "row",

@@ -16,6 +16,8 @@ import KeyBoardNumber from "../../../../components/tools/KeyBoardNumber";
 import androidToast from "../../../PageComponent/AndroidToast/AndroidToast";
 import { objectClone } from "../../../../utils/objectClone";
 import * as commonFunction from "../../../PageComponent/commonFunction/commonFunction";
+import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
+import FrontAndBack from "../../../PageComponent/frontAndBack/frontAndBack";
 
 export default class CalculAteattention extends React.Component {
   constructor(props) {
@@ -23,7 +25,7 @@ export default class CalculAteattention extends React.Component {
     this.state = {
       reduceSeven: 5,
       questionModel: "calculAteattention",
-      questionIndex: 0
+      questionIndex: 10
     };
   }
   componentWillMount() {
@@ -56,6 +58,8 @@ export default class CalculAteattention extends React.Component {
     console.log("this.state.questionInfo_", this.state.questionInfo);
     const questionCurrent = this.state.questionArr[5 - this.state.reduceSeven];
     const noEmpty = this.state.questionInfo[questionCurrent]["answer"] === "";
+    const iterable = Object.values(this.state.questionInfo);
+    console.log("iterable_", iterable);
     if (noEmpty) {
       androidToast("请选择选项");
       return;
@@ -66,12 +70,12 @@ export default class CalculAteattention extends React.Component {
           reduceSeven: this.state.reduceSeven - 1
         });
       } else {
-        // for (let item in this.state.questionInfo) {
-        //   if (item.answer === "") {
-        //     androidToast("请选择选项");
-        //     return;
-        //   }
-        // }
+        for (const item of iterable) {
+          if (item.answer === "") {
+            androidToast("请选择选项");
+            return;
+          }
+        }
         commonFunction.jumpWithParameter("backwards", this.state, this.props);
       }
     }
@@ -120,7 +124,7 @@ export default class CalculAteattention extends React.Component {
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-end",
-                marginTop: dp(45)
+                marginTop: dp(40)
               }}
             >
               <Text style={{ fontSize: font(60) }}>
@@ -161,24 +165,141 @@ export default class CalculAteattention extends React.Component {
   }
   render() {
     return (
-      <View style={{ flexDirection: "row", marginLeft: dp(350) }}>
-        <View style={{ width: "50%", paddingRight: dp(300) }}>
-          {this.reduce()}
+      <View>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            marginTop: dp(50),
+            alignItems: "center"
+          }}
+        >
+          <PageOrderCode index={this.state.questionIndex + 1} />
+          <View
+            style={{
+              width: dp(800),
+              marginTop: dp(-570),
+              justifyContent: "center",
+              textAlign: "center"
+            }}
+          >
+            <Text style={[styles.questionText, { width: "100%" }]}>
+              请您计算100连续减去7
+            </Text>
+          </View>
         </View>
-        <View style={{ width: "50%" }}>
-          <KeyBoardNumber
-            ref="refKeyBoard"
-            key={7}
-            style={{ marginTop: dp(200) }}
-            onEnsure={this.goNext}
-            onChangeText={this.keyBoardChange.bind(
-              this,
-              this.state.questionArr[5 - this.state.reduceSeven]
-            )}
-            scu={false}
-          />
+
+        <View style={{ flexDirection: "row", marginLeft: dp(350) }}>
+          <View style={{ width: "50%", paddingRight: dp(300) }}>
+            {this.reduce()}
+          </View>
+          <View style={{ width: "50%" }}>
+            <KeyBoardNumber
+              ref="refKeyBoard"
+              key={7}
+              style={{ marginTop: dp(200) }}
+              onEnsure={this.goNext}
+              onChangeText={this.keyBoardChange.bind(
+                this,
+                this.state.questionArr[5 - this.state.reduceSeven]
+              )}
+              scu={false}
+            />
+          </View>
         </View>
+        <View style={{ alignItems: "center", marginTop: dp(50) }} />
+        <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
       </View>
     );
   }
 }
+const BASE_COLOR = "#479e13";
+const styles = StyleSheet.create({
+  radio: {
+    width: dp(50),
+    height: dp(50)
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#f2f9fd"
+  },
+  questionText: {
+    fontSize: font(60),
+    paddingTop: dp(30),
+    paddingBottom: dp(30),
+    width: dp(1200),
+    color: "#2c2c2c",
+    lineHeight: dp(88),
+    marginLeft: dp(41),
+    paddingRight: dp(80),
+    fontWeight: "100",
+    textAlign: "center"
+  },
+  table: {
+    flexDirection: "row"
+  },
+  tableRow: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  tableTh: {
+    flex: 1,
+
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: dp(0.5),
+    borderColor: "#f0b22b"
+  },
+  tableTd: {
+    flex: 1,
+
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: dp(0.5),
+    borderColor: "#f0b22b"
+  },
+  tableThText: {
+    fontSize: font(40)
+  },
+  table: {
+    flexDirection: "row",
+    height: dp(320),
+    alignItems: "center",
+    marginLeft: dp(240)
+  },
+  tableColumn1: {
+    alignItems: "center",
+    borderBottomColor: BASE_COLOR,
+    borderBottomWidth: dp(0.5)
+  },
+  tableRow: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  td: {
+    fontSize: font(28),
+    color: "#777777",
+    width: dp(400),
+    textAlign: "center",
+    textAlignVertical: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: dp(0.5),
+    borderColor: BASE_COLOR
+  },
+  tdb: {
+    backgroundColor: "rgb(246,246,246)"
+  },
+  radio: {
+    width: dp(50),
+    height: dp(50)
+  },
+  th: {
+    fontSize: font(40),
+    color: "#777777",
+    width: dp(400),
+    textAlign: "center",
+    textAlignVertical: "center",
+    borderWidth: dp(0.5),
+    borderColor: BASE_COLOR
+  }
+});
