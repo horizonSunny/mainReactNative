@@ -55,7 +55,8 @@ export default class MMSE extends React.Component {
       directionForward: false,
       // 各个问题模块的答案
       directiveForce: {
-        questionInfo: ""
+        questionInfo: "",
+        totalScore: ""
       },
       ImmediatelyRecall: {
         questionInfo: ""
@@ -94,13 +95,27 @@ export default class MMSE extends React.Component {
   calculateScore() {}
 
   // 从子组件问题模块传上来的值，然后确定是向前还是向后
-  childrenInfo = (questionModel, questionInfo, direction) => {
+  childrenInfo = (questionModel, questionInfo, totalScore, direction) => {
     console.log("have_in_childrenInfo", questionInfo);
-    this.state[questionModel]["questionInfo"] = questionInfo;
+    console.log("totalScore_", totalScore);
+
+    // this.state[questionModel]["questionInfo"] = questionInfo;
+    // const info = Object.assign(questionInfo, totalScore);
+    // console.log("querstionModel_", info);
+    const test = {
+      questionInfo,
+      totalScore
+    };
+    console.log("test_", test);
+
+    this.setState({
+      [questionModel]: { questionInfo: questionInfo, totalScore: totalScore }
+    });
     console.log(
       "have_in_childrenInfo_questionModel",
-      this.state[questionModel]["questionInfo"]
+      this.state[questionModel]
     );
+    console.log("have_in_childrenInfo_direction", direction);
     // 先判断是否是最前面一个或者最后面一个,forward表示上一个问题模块,backwards表示下一个问题模块
     if (this.state.questionModelIndex === 0 && direction === "forward") {
       return;
@@ -232,8 +247,7 @@ export default class MMSE extends React.Component {
         <View style={{ justifyContent: "center", marginTop: dp(60) }}>
           <BackgroundImage
             source={require("./components/img/bk1.png")}
-            style={{ height: dp(500), width: dp(1725), alignItems: "center" }}
-          >
+            style={{ height: dp(500), width: dp(1725), alignItems: "center" }}>
             <Text
               style={{
                 fontSize: font(100),
@@ -241,8 +255,7 @@ export default class MMSE extends React.Component {
                 marginTop: dp(120),
                 fontWeight: "900",
                 textAlign: "center"
-              }}
-            >
+              }}>
               总体认知能力测评{"\n"}MMSE
             </Text>
             <Text
@@ -250,8 +263,7 @@ export default class MMSE extends React.Component {
                 fontSize: font(36),
                 color: "#c4e1fe",
                 marginTop: dp(40)
-              }}
-            >
+              }}>
               本次测评大约需要7分钟
             </Text>
           </BackgroundImage>
@@ -268,15 +280,13 @@ export default class MMSE extends React.Component {
               borderRadius: dp(10),
               overflow: "hidden"
             }}
-            onPress={this.startMeasurement}
-          >
+            onPress={this.startMeasurement}>
             <Text
               style={{
                 fontSize: font(40),
                 fontWeight: "bold",
                 color: "#ffffff"
-              }}
-            >
+              }}>
               开始测评
             </Text>
           </ButtonImg>
