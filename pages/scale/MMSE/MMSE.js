@@ -55,8 +55,7 @@ export default class MMSE extends React.Component {
       directionForward: false,
       // 各个问题模块的答案
       directiveForce: {
-        questionInfo: "",
-        totalScore: ""
+        questionInfo: ""
       },
       ImmediatelyRecall: {
         questionInfo: ""
@@ -89,70 +88,122 @@ export default class MMSE extends React.Component {
   }
 
   /**
-   * @description 进行汇总计算
+   * @description 进行总分计算，并且判断痴呆程度
    * @returns
    */
-  calculateScore() {}
+  calculate = () => {
+    console.log("123_start");
+    console.log("this.state_", this.state);
+    let totalPoints = 0;
+    let values = Object.values(this.state);
+    for (let item = 0; item < values.length; item++) {
+      if (values[item].totalScore) {
+        totalPoints += values[item].totalScore;
+      } else {
+        continue;
+      }
+    }
+    console.log("totalPoints_MMse_", totalPoints);
+    console.log("directiveForce_MMse_123_", this.state.directiveForce);
+    const obj = {
+      directiveForce: this.state.directiveForce,
+      ImmediatelyRecall: this.state.ImmediatelyRecall,
+      calculAteattention: this.state.calculAteattention,
+      named: this.state.named,
+      retell: this.state.retell,
+      read: this.state.read,
+      understand: this.state.understand,
+      write: this.state.write,
+      viewSpace: this.state.viewSpace,
+      delayRecall: this.state.delayRecall
+    };
+    const questionInfoTotal = Object.assign({}, obj);
+    console.log("questionInfo_MMse_", questionInfoTotal);
+    // 依据总分判断状态
+    let status;
+    if (totalPoints >= 27) {
+      status = "正常";
+    } else if (27 > totalPoints >= 21) {
+      status = "轻度";
+    } else if (21 > totalPoints >= 10) {
+      status = "中度";
+    } else {
+      status = "重度";
+    }
+    // this.props.rootStore.setReportData(reportData)
+    const MMSE = { questionInfoTotal, status, totalPoints };
+    return MMSE;
+  };
 
   // 从子组件问题模块传上来的值，然后确定是向前还是向后
   childrenInfo = (questionModel, questionInfo, totalScore, direction) => {
+    console.log("have_in_questionModel", questionModel);
     console.log("have_in_childrenInfo", questionInfo);
     console.log("totalScore_", totalScore);
-
-    // this.state[questionModel]["questionInfo"] = questionInfo;
-    // const info = Object.assign(questionInfo, totalScore);
-    // console.log("querstionModel_", info);
-    const test = {
+    const qustionModelInfo = {
       questionInfo,
       totalScore
     };
-    console.log("test_", test);
 
-    this.setState({
-      [questionModel]: { questionInfo: questionInfo, totalScore: totalScore }
-    });
-    console.log(
-      "have_in_childrenInfo_questionModel",
-      this.state[questionModel]
+    this.setState(
+      {
+        [questionModel]: qustionModelInfo
+      },
+      () => {
+        // 先判断是否是最前面一个或者最后面一个,forward表示上一个问题模块,backwards表示下一个问题模块
+        if (this.state.questionModelIndex === 0 && direction === "forward") {
+          return;
+        } else if (
+          this.state.questionModelIndex === this.state.questionModelNum - 1 &&
+          direction === "backwards"
+        ) {
+          // 表示完成，rootStory保存量表信息
+          this.save();
+          return;
+        }
+        // 不是第一个和最后一个话，直接让question模块自增或者自减，
+        // directionForward 表示进入问题模块是从头进还是从尾进
+        if (direction === "forward") {
+          console.log('direction === "forward"');
+          this.setState({
+            questionModelIndex: --this.state.questionModelIndex,
+            directionForward: true
+          });
+        } else if (direction === "backwards") {
+          this.setState({
+            questionModelIndex: ++this.state.questionModelIndex,
+            directionForward: false
+          });
+        }
+      }
     );
-    console.log("have_in_childrenInfo_direction", direction);
-    // 先判断是否是最前面一个或者最后面一个,forward表示上一个问题模块,backwards表示下一个问题模块
-    if (this.state.questionModelIndex === 0 && direction === "forward") {
-      return;
-    } else if (
-      this.state.questionModelIndex === this.state.questionModelNum - 1 &&
-      direction === "backwards"
-    ) {
-      // 表示完成，rootStory保存量表信息
-      this.save();
-      return;
-    }
-    // 不是第一个和最后一个话，直接让question模块自增或者自减，
-    // directionForward 表示进入问题模块是从头进还是从尾进
-    if (direction === "forward") {
-      console.log('direction === "forward"');
-      this.setState({
-        questionModelIndex: --this.state.questionModelIndex,
-        directionForward: true
-      });
-    } else if (direction === "backwards") {
-      console.log('direction === "backwards"');
-      this.setState({
-        questionModelIndex: ++this.state.questionModelIndex,
-        directionForward: false
-      });
-      console.log(
-        "MMSE_backwards_questionModelIndex_" + this.state.questionModelIndex
-      );
-    }
   };
 
   /**
    * @description 最后的保存计算
    */
   save = () => {
-    const data = this.calculateScore();
-    return;
+    const scaleScheduleIndex = this.props.rootStore.scaleCurrentIndex;
+    const scaleScheduleLength = this.props.rootStore.scaleName.length - 1;
+    const currentScaleName = this.props.rootStore.scaleName[scaleScheduleIndex];
+    const data = this.calculate();
+    let scaleInfo = Object.assign(data, { scaleName: currentScaleName });
+    console.log("MMSE_DATA_", scaleInfo);
+    this.props.rootStore.saveFinishedScale(scaleInfo);
+
+    console.log(
+      "this.props.rootStore.finishedScale_",
+      this.props.rootStore.finishedScale.finishedScale
+    );
+    if (scaleScheduleIndex < scaleScheduleLength) {
+      console.log("goToNext");
+      this.props.rootStore.setScaleIndex(scaleScheduleIndex + 1);
+      // 路由到下一个量表页面
+      return;
+    } else {
+      console.log("goToResultPage");
+      // 路由到结果页面
+    }
   };
   /**
    *
@@ -247,7 +298,8 @@ export default class MMSE extends React.Component {
         <View style={{ justifyContent: "center", marginTop: dp(60) }}>
           <BackgroundImage
             source={require("./components/img/bk1.png")}
-            style={{ height: dp(500), width: dp(1725), alignItems: "center" }}>
+            style={{ height: dp(500), width: dp(1725), alignItems: "center" }}
+          >
             <Text
               style={{
                 fontSize: font(100),
@@ -255,7 +307,8 @@ export default class MMSE extends React.Component {
                 marginTop: dp(120),
                 fontWeight: "900",
                 textAlign: "center"
-              }}>
+              }}
+            >
               总体认知能力测评{"\n"}MMSE
             </Text>
             <Text
@@ -263,7 +316,8 @@ export default class MMSE extends React.Component {
                 fontSize: font(36),
                 color: "#c4e1fe",
                 marginTop: dp(40)
-              }}>
+              }}
+            >
               本次测评大约需要7分钟
             </Text>
           </BackgroundImage>
@@ -280,13 +334,15 @@ export default class MMSE extends React.Component {
               borderRadius: dp(10),
               overflow: "hidden"
             }}
-            onPress={this.startMeasurement}>
+            onPress={this.startMeasurement}
+          >
             <Text
               style={{
                 fontSize: font(40),
                 fontWeight: "bold",
                 color: "#ffffff"
-              }}>
+              }}
+            >
               开始测评
             </Text>
           </ButtonImg>

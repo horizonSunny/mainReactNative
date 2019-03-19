@@ -76,8 +76,26 @@ export default class ViewSpace extends React.Component {
       }
     }
     console.log("this.state.questionInfo_", this.state.questionInfo);
-    commonFunction.jumpWithParameter("backwards", this.state, this.props);
+    this.calculateScore();
     return;
+  };
+  calculateScore = () => {
+    let questionInfo = objectClone(this.state.questionInfo);
+    questionInfo["draw"]["score"] = parseInt(questionInfo["draw"]["answer"]);
+    let values = Object.values(questionInfo);
+    let totalScore = 0;
+    for (let index = 0; index < values.length; index++) {
+      totalScore += Number(values[index].score);
+    }
+    this.setState(
+      {
+        questionInfo: questionInfo,
+        totalScore: totalScore
+      },
+      () => {
+        commonFunction.jumpWithParameter("backwards", this.state, this.props);
+      }
+    );
   };
   getBase64 = base64 => {
     console.log("123_", base64);

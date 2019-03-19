@@ -66,8 +66,28 @@ export default class Read extends React.Component {
       }
     }
     console.log("this.state.questionInfo_", this.state.questionInfo);
-    commonFunction.jumpWithParameter("backwards", this.state, this.props);
+    this.calculateScore();
     return;
+  };
+  calculateScore = () => {
+    let questionInfo = objectClone(this.state.questionInfo);
+    questionInfo["closeEyes"]["score"] = parseInt(
+      questionInfo["closeEyes"]["answer"]
+    );
+    let values = Object.values(questionInfo);
+    let totalScore = 0;
+    for (let index = 0; index < values.length; index++) {
+      totalScore += Number(values[index].score);
+    }
+    this.setState(
+      {
+        questionInfo: questionInfo,
+        totalScore: totalScore
+      },
+      () => {
+        commonFunction.jumpWithParameter("backwards", this.state, this.props);
+      }
+    );
   };
   render() {
     return (

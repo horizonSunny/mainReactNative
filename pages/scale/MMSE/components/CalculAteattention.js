@@ -76,13 +76,50 @@ export default class CalculAteattention extends React.Component {
             return;
           }
         }
-        commonFunction.jumpWithParameter("backwards", this.state, this.props);
+        this.calculateScore();
       }
     }
   };
-  // saveAndClear(){
-
-  // }
+  judgeReduce(subtractor, minuend) {
+    return parseInt(subtractor) - parseInt(minuend) === 7 ? 1 : 0;
+  }
+  calculateScore = () => {
+    let questionInfo = objectClone(this.state.questionInfo);
+    questionInfo["ninetyThree"]["score"] = this.judgeReduce(
+      100,
+      questionInfo["ninetyThree"]["answer"]
+    );
+    questionInfo["eightySix"]["score"] = this.judgeReduce(
+      questionInfo["ninetyThree"]["answer"],
+      questionInfo["eightySix"]["answer"]
+    );
+    questionInfo["seventyNine"]["score"] = this.judgeReduce(
+      questionInfo["eightySix"]["answer"],
+      questionInfo["seventyNine"]["answer"]
+    );
+    questionInfo["seventyTwo"]["score"] = this.judgeReduce(
+      questionInfo["seventyNine"]["answer"],
+      questionInfo["seventyTwo"]["answer"]
+    );
+    questionInfo["sixtyFive"]["score"] = this.judgeReduce(
+      questionInfo["seventyTwo"]["answer"],
+      questionInfo["sixtyFive"]["answer"]
+    );
+    let values = Object.values(questionInfo);
+    let totalScore = 0;
+    for (let index = 0; index < values.length; index++) {
+      totalScore += Number(values[index].score);
+    }
+    this.setState(
+      {
+        questionInfo: questionInfo,
+        totalScore: totalScore
+      },
+      () => {
+        commonFunction.jumpWithParameter("backwards", this.state, this.props);
+      }
+    );
+  };
   keyBoardChange = (key, value) => {
     let questionInfo = this.state.questionInfo;
     questionInfo[key]["answer"] = value;

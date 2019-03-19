@@ -68,8 +68,34 @@ export default class Understand extends React.Component {
       }
     }
     console.log("this.state.questionInfo_", this.state.questionInfo);
-    commonFunction.jumpWithParameter("backwards", this.state, this.props);
+    this.calculateScore();
     return;
+  };
+  calculateScore = () => {
+    let questionInfo = objectClone(this.state.questionInfo);
+    questionInfo["holdPaper"]["score"] = parseInt(
+      questionInfo["holdPaper"]["answer"]
+    );
+    questionInfo["foldedInHalf"]["score"] = parseInt(
+      questionInfo["foldedInHalf"]["answer"]
+    );
+    questionInfo["onTheLeg"]["score"] = parseInt(
+      questionInfo["onTheLeg"]["answer"]
+    );
+    let values = Object.values(questionInfo);
+    let totalScore = 0;
+    for (let index = 0; index < values.length; index++) {
+      totalScore += Number(values[index].score);
+    }
+    this.setState(
+      {
+        questionInfo: questionInfo,
+        totalScore: totalScore
+      },
+      () => {
+        commonFunction.jumpWithParameter("backwards", this.state, this.props);
+      }
+    );
   };
   render() {
     return (

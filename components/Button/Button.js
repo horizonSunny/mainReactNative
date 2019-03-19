@@ -36,7 +36,7 @@ class MyButton extends React.Component{
         background={TouchableNativeFeedback.Ripple(this.props.rippleColor?this.props.rippleColor:'#a2a4a6',false)}
         onPress={this.props.onPress}>
         <View style={[styles.button,this.props.style]}>
-          { this.props.children}
+          <Text>{ this.props.children}</Text>
         </View>
       </TouchableNativeFeedback>
     )
