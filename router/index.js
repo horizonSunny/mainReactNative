@@ -11,8 +11,8 @@ import React from "react";
 // import ScaleMain from '../pages/scale/scaleMain'
 import MMSE from "../pages/scale/MMSE/MMSE";
 import ADL from "../pages/scale/ADL/ADL";
+import MOCA from "../pages/scale/MOCA/MOCA";
 import Report from "../pages/Report/Report";
-import TopBar from "../components/TopBar/TopBar";
 
 import RNbridge from "../components/RNbridge/RNbridge";
 import { inject } from "mobx-react";
@@ -56,7 +56,7 @@ const Main = inject("rootStore")(props => {
     console.log("******", res);
     initData(res, props.rootStore);
     // 判断量表里面有没有东西，有的话走1，3，没有走2
-    firstPage = props.rootStore.scaleName.length !== 0 ? "MMSE" : "Report";
+    firstPage = props.rootStore.scaleName.length !== 0 ? "MOCA" : "Report";
     console.log("firstPage_" + firstPage);
     const resetAction = StackActions.reset({
       index: 0,
@@ -76,6 +76,9 @@ const routes = {
   },
   ADL: {
     screen: ADL
+  },
+  MOCA: {
+    screen: MOCA
   },
   Report: {
     screen: Report
