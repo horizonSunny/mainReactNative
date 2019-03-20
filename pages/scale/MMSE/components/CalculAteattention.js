@@ -210,7 +210,7 @@ export default class CalculAteattention extends React.Component {
             alignItems: "center"
           }}
         >
-          <PageOrderCode index={this.state.questionIndex + 1} />
+          <PageOrderCode index={this.state.questionIndex + 1} indexTotal={19} />
           <View
             style={{
               width: dp(800),

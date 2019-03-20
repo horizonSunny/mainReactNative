@@ -100,6 +100,7 @@ export default class DelayRecall extends React.Component {
           <PageOrderCode
             backgroundColor={"green"}
             index={this.state.questionIndex + 1}
+            indexTotal={19}
           />
           <View
             style={{

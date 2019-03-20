@@ -220,15 +220,20 @@ export default class DirectiveForce extends React.Component {
                 backgroundColor: "#fff",
                 marginTop: dp(50),
                 alignItems: "center"
-              }}>
-              <PageOrderCode index={this.state.questionIndex + 1} />
+              }}
+            >
+              <PageOrderCode
+                index={this.state.questionIndex + 1}
+                indexTotal={19}
+              />
               <View
                 style={{
                   width: dp(800),
                   marginTop: dp(-570),
                   justifyContent: "center",
                   textAlign: "center"
-                }}>
+                }}
+              >
                 <Text style={[styles.questionText, { width: "100%" }]}>
                   今年是哪一年？
                 </Text>
@@ -274,7 +279,8 @@ export default class DirectiveForce extends React.Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 marginTop: dp(60)
-              }}>
+              }}
+            >
               <KeyBoardNumber
                 onEnsure={this.goNext.bind(this, "thisYear")}
                 onChangeText={this.keyBoardChange.bind(this, "thisYear")}
@@ -292,19 +298,25 @@ export default class DirectiveForce extends React.Component {
                   backgroundColor: "#fff",
                   marginTop: dp(50),
                   height: dp(200)
-                }}>
-                <PageOrderCode index={this.state.questionIndex + 1} />
+                }}
+              >
+                <PageOrderCode
+                  index={this.state.questionIndex + 1}
+                  indexTotal={19}
+                />
                 <View
                   style={{
                     width: dp(1500),
                     marginTop: dp(-570),
                     marginLeft: dp(200)
-                  }}>
+                  }}
+                >
                   <Text
                     style={[
                       styles.questionText,
                       { width: dp(1500), marginTop: dp(20), fontSize: font(60) }
-                    ]}>
+                    ]}
+                  >
                     现在是什么季节？
                   </Text>
                 </View>
@@ -314,7 +326,8 @@ export default class DirectiveForce extends React.Component {
                   alignItems: "center",
                   marginTop: dp(50),
                   marginBottom: dp(50)
-                }}>
+                }}
+              >
                 <View
                   style={{
                     flex: 1,
@@ -336,7 +349,8 @@ export default class DirectiveForce extends React.Component {
                     flexWrap: "nowrap"
                   }}
                   model={this.state.questionInfo["thisSeason"]["answer"]}
-                  onChange={this.keyBoardChange.bind(this, "thisSeason")}>
+                  onChange={this.keyBoardChange.bind(this, "thisSeason")}
+                >
                   {season.map((item, index) => {
                     return (
                       <RadioButton
@@ -365,15 +379,20 @@ export default class DirectiveForce extends React.Component {
                 backgroundColor: "#fff",
                 marginTop: dp(50),
                 alignItems: "center"
-              }}>
-              <PageOrderCode index={this.state.questionIndex + 1} />
+              }}
+            >
+              <PageOrderCode
+                index={this.state.questionIndex + 1}
+                indexTotal={19}
+              />
               <View
                 style={{
                   width: dp(800),
                   marginTop: dp(-570),
                   justifyContent: "center",
                   textAlign: "center"
-                }}>
+                }}
+              >
                 <Text style={[styles.questionText, { width: "100%" }]}>
                   现在是几月？
                 </Text>
@@ -419,7 +438,8 @@ export default class DirectiveForce extends React.Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 marginTop: dp(60)
-              }}>
+              }}
+            >
               <KeyBoardNumber
                 onEnsure={this.goNext.bind(this, "thisMonth")}
                 onChangeText={this.keyBoardChange.bind(this, "thisMonth")}
@@ -436,15 +456,20 @@ export default class DirectiveForce extends React.Component {
                 backgroundColor: "#fff",
                 marginTop: dp(50),
                 alignItems: "center"
-              }}>
-              <PageOrderCode index={this.state.questionIndex + 1} />
+              }}
+            >
+              <PageOrderCode
+                index={this.state.questionIndex + 1}
+                indexTotal={19}
+              />
               <View
                 style={{
                   width: dp(800),
                   marginTop: dp(-570),
                   justifyContent: "center",
                   textAlign: "center"
-                }}>
+                }}
+              >
                 <Text style={[styles.questionText, { width: "100%" }]}>
                   今天是几号？
                 </Text>
@@ -490,7 +515,8 @@ export default class DirectiveForce extends React.Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 marginTop: dp(60)
-              }}>
+              }}
+            >
               <KeyBoardNumber
                 onEnsure={this.goNext.bind(this, "today")}
                 onChangeText={this.keyBoardChange.bind(this, "today")}
@@ -504,14 +530,18 @@ export default class DirectiveForce extends React.Component {
           <React.Fragment>
             <View style={{ marginTop: dp(30) }}>
               <View style={{ backgroundColor: "#fff", marginTop: dp(50) }}>
-                <PageOrderCode index={this.state.questionIndex + 1} />
+                <PageOrderCode
+                  index={this.state.questionIndex + 1}
+                  indexTotal={19}
+                />
                 <View
                   style={{
                     flexDirection: "row",
                     width: dp(1500),
                     marginTop: dp(-570),
                     marginLeft: dp(200)
-                  }}>
+                  }}
+                >
                   <Text
                     style={[
                       styles.questionText,
@@ -521,7 +551,8 @@ export default class DirectiveForce extends React.Component {
                         fontSize: font(60),
                         marginTop: dp(20)
                       }
-                    ]}>
+                    ]}
+                  >
                     今天星期几？
                   </Text>
                 </View>
@@ -531,7 +562,8 @@ export default class DirectiveForce extends React.Component {
                   alignItems: "center",
                   marginTop: dp(50),
                   marginBottom: dp(50)
-                }}>
+                }}
+              >
                 <View
                   style={{
                     flex: 1,
@@ -552,7 +584,8 @@ export default class DirectiveForce extends React.Component {
                     flexWrap: "wrap"
                   }}
                   model={this.state.questionInfo["weekDay"]["answer"]}
-                  onChange={this.keyBoardChange.bind(this, "weekDay")}>
+                  onChange={this.keyBoardChange.bind(this, "weekDay")}
+                >
                   {weekDay.map((item, index) => {
                     return (
                       <RadioButton
@@ -578,6 +611,7 @@ export default class DirectiveForce extends React.Component {
           <DoctorHelpConfirm
             question={"现在您在哪个省哪个市?"}
             questionType={"city"}
+            indexTotal={19}
             questionInfo={this.state.questionInfo}
             questionIndex={this.state.questionIndex}
             keyBoardChange={this.keyBoardChange}
@@ -589,6 +623,7 @@ export default class DirectiveForce extends React.Component {
           <DoctorHelpConfirm
             question={"您住在什么区(县)?"}
             questionType={"county"}
+            indexTotal={19}
             questionInfo={this.state.questionInfo}
             questionIndex={this.state.questionIndex}
             keyBoardChange={this.keyBoardChange}
@@ -600,6 +635,7 @@ export default class DirectiveForce extends React.Component {
           <DoctorHelpConfirm
             question={"您住在什么街道(乡)？"}
             questionType={"street"}
+            indexTotal={19}
             questionInfo={this.state.questionInfo}
             questionIndex={this.state.questionIndex}
             keyBoardChange={this.keyBoardChange}
@@ -611,6 +647,7 @@ export default class DirectiveForce extends React.Component {
           <DoctorHelpConfirm
             question={"我们现在是在第几层楼？"}
             questionType={"floor"}
+            indexTotal={19}
             questionInfo={this.state.questionInfo}
             questionIndex={this.state.questionIndex}
             keyBoardChange={this.keyBoardChange}
@@ -622,6 +659,7 @@ export default class DirectiveForce extends React.Component {
           <DoctorHelpConfirm
             question={"这儿是什么地方？"}
             questionType={"organization"}
+            indexTotal={19}
             questionInfo={this.state.questionInfo}
             questionIndex={this.state.questionIndex}
             keyBoardChange={this.keyBoardChange}

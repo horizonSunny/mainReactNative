@@ -3,140 +3,102 @@ module.exports = {
     {
       title: "自己搭乘公共汽车",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "lift"
     },
     {
       title: "到家附近的地方去",
       subTitle: "步行范围",
-      name: "lift",
-      options: options
+      name: "goOut"
     },
     {
       title: "自己做饭",
       subTitle: "包含生火",
-      name: "lift",
-      options: options
+      name: "selfCatering"
     },
     {
       title: "做家务",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "keepHouse"
     },
     {
       title: "吃药",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "takeMedicine"
     },
     {
       title: "吃饭",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "eat"
     },
     {
       title: "穿衣服,脱衣服",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "putOn"
     },
     {
       title: "梳头、刷牙等",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "brushTeeth"
     },
     {
       title: "洗自己的衣服",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "washClothes"
     },
     {
       title: "在平坦的室内走",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "indoor"
     },
     {
       title: "上下楼梯",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "stairs"
     },
     {
       title: "上下床,坐下或站起",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "bed"
     },
     {
       title: "提水煮饭,洗澡",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "takeBath"
     },
     {
-      title: "洗澡水",
+      title: "洗澡",
       subTitle: "水已放好",
-      name: "lift",
-      options: options
+      name: "takeBathTwo"
     },
     {
       title: "剪脚趾甲",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "trimx"
     },
     {
       title: "逛街,购物",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "shopping"
     },
     {
       title: "定时去厕所",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "toilet"
     },
     {
       title: "打电话",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "phone"
     },
     {
       title: "处理自己的钱财",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "takeMoney"
     },
     {
       title: "独自在家",
       subTitle: "",
-      name: "lift",
-      options: options
+      name: "alone"
     }
   ]
 };
-const options = [
-  {
-    text: "自己完全可以做",
-    value: 0
-  },
-  {
-    text: "需要帮助",
-    value: 1
-  },
-  {
-    text: "有些困难，自己尚能完成",
-    value: 2
-  },
-  {
-    text: "根本不能做",
-    value: 3
-  }
-];

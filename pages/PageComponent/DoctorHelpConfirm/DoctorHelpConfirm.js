@@ -17,6 +17,7 @@ export default class DoctorHelpConfirm extends React.Component {
           <PageOrderCode
             backgroundColor={"green"}
             index={this.props.questionIndex + 1}
+            indexTotal={this.props.indexTotal}
           />
           <View
             style={{

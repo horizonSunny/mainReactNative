@@ -44,6 +44,7 @@ class Store {
   @action.bound
   saveFinishedScale(scaleInfo) {
     this.finishedScale.push(scaleInfo);
+    console.log("this.finishedScale_", this.finishedScale);
   }
 }
 export default Store;

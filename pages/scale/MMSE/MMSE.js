@@ -22,6 +22,8 @@ import Understand from "./components/Understand";
 import Write from "./components/Write";
 import ViewSpace from "./components/ViewSpace";
 import DelayRecall from "./components/DelayRecall";
+// 量表
+import { save } from "../routeAndSave";
 
 /**
  * @description 把一个量表按问题模块划分，最后再汇总到这个父级模块进行计算
@@ -158,7 +160,8 @@ export default class MMSE extends React.Component {
           direction === "backwards"
         ) {
           // 表示完成，rootStory保存量表信息
-          this.save();
+          const calculateResult = this.calculate();
+          save(calculateResult, this.props.rootStore);
           return;
         }
         // 不是第一个和最后一个话，直接让question模块自增或者自减，
@@ -182,29 +185,6 @@ export default class MMSE extends React.Component {
   /**
    * @description 最后的保存计算
    */
-  save = () => {
-    const scaleScheduleIndex = this.props.rootStore.scaleCurrentIndex;
-    const scaleScheduleLength = this.props.rootStore.scaleName.length - 1;
-    const currentScaleName = this.props.rootStore.scaleName[scaleScheduleIndex];
-    const data = this.calculate();
-    let scaleInfo = Object.assign(data, { scaleName: currentScaleName });
-    console.log("MMSE_DATA_", scaleInfo);
-    this.props.rootStore.saveFinishedScale(scaleInfo);
-
-    console.log(
-      "this.props.rootStore.finishedScale_",
-      this.props.rootStore.finishedScale.finishedScale
-    );
-    if (scaleScheduleIndex < scaleScheduleLength) {
-      console.log("goToNext");
-      this.props.rootStore.setScaleIndex(scaleScheduleIndex + 1);
-      // 路由到下一个量表页面
-      return;
-    } else {
-      console.log("goToResultPage");
-      // 路由到结果页面
-    }
-  };
   /**
    *
    * @returns 测量问题页面,或者返回主页

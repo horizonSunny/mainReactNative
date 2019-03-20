@@ -33,7 +33,7 @@ export default class PageOrderCode extends React.Component {
           ]}
         >
           {this.props.index}
-          <Text style={{ fontSize: font(30) }}>/ 19</Text>
+          <Text style={{ fontSize: font(30) }}>/ {this.props.indexTotal}</Text>
         </Text>
       </BackgroundImage>
     );

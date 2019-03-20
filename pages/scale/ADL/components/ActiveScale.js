@@ -21,8 +21,12 @@ import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
 import androidToast from "../../../PageComponent/AndroidToast/AndroidToast";
 import * as commonFunction from "../../../PageComponent/commonFunction/commonFunction";
 import { questionDisplay } from "./questionInfo";
+import ActiveItem from "./ActiveItem";
+// tools
+import { objectClone } from "../../../../utils/objectClone";
+// import { save } from "../../routeAndSave";
 
-export default class ActiveItem extends React.Component {
+export default class ActiveScale extends React.Component {
   constructor(props) {
     super(props);
     console.log("question_", questionDisplay);
@@ -31,27 +35,64 @@ export default class ActiveItem extends React.Component {
     };
   }
   componentWillMount() {
-    // let answerModel = {
-    //   score: 0,
-    //   answer: ""
-    // };
-    // let questionInfo = {
-    //   watches: objectClone(answerModel),
-    //   pencil: objectClone(answerModel)
-    // };
+    let answerModel = {
+      score: 0,
+      answer: ""
+    };
+    let questionInfo = {
+      lift: objectClone(answerModel),
+      goOut: objectClone(answerModel),
+      selfCatering: objectClone(answerModel),
+      keepHouse: objectClone(answerModel),
+      takeMedicine: objectClone(answerModel),
+      eat: objectClone(answerModel),
+      putOn: objectClone(answerModel),
+      brushTeeth: objectClone(answerModel),
+      washClothes: objectClone(answerModel),
+      indoor: objectClone(answerModel),
+      stairs: objectClone(answerModel),
+      bed: objectClone(answerModel),
+      takeBath: objectClone(answerModel),
+      takeBathTwo: objectClone(answerModel),
+      trimx: objectClone(answerModel),
+      shopping: objectClone(answerModel),
+      toilet: objectClone(answerModel),
+      phone: objectClone(answerModel),
+      takeMoney: objectClone(answerModel),
+      alone: objectClone(answerModel)
+    };
     // if (this.props.questionModel["questionInfo"] === "") {
-    //   this.setState({ questionInfo: questionInfo });
+    this.setState({ questionInfo: questionInfo });
     // } else {
-    //   this.setState({ questionInfo: this.props.questionModel["questionInfo"] });
+    // this.setState({ questionInfo: this.props.questionModel["questionInfo"] });
     // }
   }
+  keyBoardChange = (key, value) => {
+    let questionInfo = this.state.questionInfo;
+    questionInfo[key]["answer"] = value;
+    this.setState({ questionInfo: questionInfo }, () => {
+      this.nextTimer && clearTimeout(this.nextTimer);
+      this.nextTimer = setTimeout(() => {
+        this.goNext();
+      }, 500);
+    });
+  };
   goNext = () => {
+    this.nextTimer && clearTimeout(this.nextTimer);
     if (this.state.questionCurrentIndex === questionDisplay.length - 1) {
+      const calculateResult = this.calculate();
+      save(calculateResult, this.props.rootStore);
       return;
     }
-    this.setState((prevState, props) => {
-      questionCurrentIndex: prevState.questionCurrentIndex + 1;
-    });
+    this.setState(
+      {
+        questionCurrentIndex: this.state.questionCurrentIndex + 1
+      },
+      () => {
+        this.calculate();
+        console.log("questionCurrentIndex", this.state.questionCurrentIndex);
+      }
+    );
   };
   goPrev = () => {
     if (this.state.questionCurrentIndex === 0) {
@@ -61,134 +102,51 @@ export default class ActiveItem extends React.Component {
       questionCurrentIndex: prevState.questionCurrentIndex - 1;
     });
   };
-  renderItem(props) {
-    return (
-      <View style={{ marginTop: dp(50) }}>
-        <View
-          style={{
-            backgroundColor: "#fff",
-            marginTop: dp(50),
-            height: dp(200)
-          }}
-        >
-          <PageOrderCode index={1} />
-          {/* 有副标题 */}
-          {true && (
-            <View
-              style={{
-                width: dp(1500),
-                marginTop: dp(-570),
-                marginLeft: dp(200)
-              }}
-            >
-              <Text
-                style={[
-                  styles.questionText,
-                  { width: dp(1500), fontSize: font(60), marginTop: dp(20) }
-                ]}
-              >
-                {"有副标题"}
-              </Text>
-              <Text
-                style={[
-                  styles.questionText,
-                  { width: dp(1500), fontSize: font(40) }
-                ]}
-              >
-                【{"副标题"}】
-              </Text>
-            </View>
-          )}
-          {/* 无副标题的 */}
-          {false && (
-            <View
-              style={{
-                width: dp(1500),
-                marginTop: dp(-570),
-                marginLeft: dp(200)
-              }}
-            >
-              <Text
-                style={[
-                  styles.questionText,
-                  { width: dp(1500), fontSize: font(60), marginTop: dp(70) }
-                ]}
-              >
-                {"无副标题"}
-              </Text>
-            </View>
-          )}
-        </View>
-        <View
-          style={{
-            alignItems: "center",
-            marginTop: dp(50),
-            marginBottom: dp(50)
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              width: dp(1500),
-              borderBottomWidth: dp(1),
-              borderBottomColor: "#ddd"
-            }}
-          />
-        </View>
-        {/* <View style={{ alignItems: "center", marginTop: dp(20) }}>
-          <RadioButton.RadioButtonGroup
-            style={{
-              width: dp(1500),
-              justifyContent: "center",
-              alignItems: "center",
-              flexWrap: "wrap"
-            }}
-            model={this.state.answers[data.name]}
-            onChange={this.onChange2.bind(this, data.name)}
-          >
-            {data.options.map((item, index) => {
-              return (
-                <RadioButton
-                  style={{
-                    marginLeft: dp(50),
-                    marginRight: dp(50),
-                    marginTop: dp(20),
-                    width: dp(600),
-                    marginBottom: dp(30)
-                  }}
-                  text={item.text}
-                  key={index}
-                  value={item.value}
-                />
-              );
-            })}
-          </RadioButton.RadioButtonGroup>
-        </View>
-        <View style={{ alignItems: "center", marginTop: dp(140) }} /> */}
-        <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
-      </View>
-    );
-  }
-  renderTest(props) {
-    return <Text>{props.index}</Text>;
-  }
+  calculate = () => {
+    let questionInfoTotal = Object.assign({}, this.state.questionInfo);
+    let totalPoints = 0;
+    // 障碍个数，有一个单项大于2分则障碍个数加一
+    // let obstacle = 0;
+    Object.keys(questionInfoTotal).map(key => {
+      questionInfoTotal[key].score = questionInfoTotal[key].answer;
+      totalPoints += this.state.questionInfo[key].score;
+      // if (questionInfoTotal[key].score > 2) {
+      //   obstacle += 1;
+      // }
+    });
+    console.log("questionInfoTotal_", questionInfoTotal);
+    let status;
+    if (totalPoints <= 26) {
+      status = "正常";
+    } else {
+      status = "不正常";
+    }
+    const ADL = { questionInfoTotal, status, totalPoints };
+    return ADL;
+  };
   render() {
     return (
-      // this.renderItem()
-      // {/* <Text>213</Text> */}
       <View>
         {questionDisplay.map((item, index) => {
           return (
-            this.state.questionCurrentIndex === index &&
-            this.renderTest(item, index)
+            this.state.questionCurrentIndex === index && (
+              <ActiveItem
+                key={index}
+                item={item}
+                index={index}
+                itemAnswer={this.state.questionInfo[item.name].answer}
+                goPrev={this.goPrev}
+                goNext={this.goNext}
+                keyBoardChange={this.keyBoardChange}
+              />
+            )
           );
         })}
       </View>
     );
   }
 }
+
 const BASE_COLOR = "#479e13";
 const styles = StyleSheet.create({
   baseColor: {

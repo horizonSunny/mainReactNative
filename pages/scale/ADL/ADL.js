@@ -17,7 +17,7 @@ import DoctorHelpWaring from "../../PageComponent/DoctorHelpWaring/DoctorHelpWar
 import { inject } from "mobx-react";
 import RNbridge from "../../../components/RNbridge/RNbridge";
 
-import ActiveItem from "./components/ActiveScale";
+import ActiveScale from "./components/ActiveScale";
 
 @inject("rootStore")
 export default class ADL extends React.Component {
@@ -98,7 +98,7 @@ export default class ADL extends React.Component {
     );
   }
   renderQuestionPage() {
-    return <ActiveItem />;
+    return <ActiveScale />;
   }
   render() {
     return (
