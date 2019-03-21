@@ -1,11 +1,15 @@
 import http from "../../utils/http/index";
+import * as message from "./scaleMessage";
 export function save(calculateResult, rootStore) {
   console.log("calculateResult_", calculateResult, "_rootStore_", rootStore);
   const scaleScheduleIndex = rootStore.scaleCurrentIndex;
   const scaleScheduleLength = rootStore.scaleName.length - 1;
   const currentScaleName = rootStore.scaleName[scaleScheduleIndex];
+  // 获取一些信息
+  const scaleMessage = message[currentScaleName];
   const data = calculateResult;
-  let scaleInfo = Object.assign(data, { scaleName: currentScaleName });
+  // 这边需要放入量表内容，量表名称，量表参考值
+  let scaleInfo = Object.assign(data, scaleMessage);
   console.log("sacle_DATA_", scaleInfo);
   rootStore.saveFinishedScale(scaleInfo);
   // test 直接发给后端

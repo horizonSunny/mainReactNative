@@ -110,8 +110,10 @@ export default class ActiveScale extends React.Component {
     // 障碍个数，有一个单项大于2分则障碍个数加一
     // let obstacle = 0;
     Object.keys(questionInfoTotal).map(key => {
-      questionInfoTotal[key].score = questionInfoTotal[key].answer;
-      totalPoints += this.state.questionInfo[key].score;
+      // 所有的answer都必须是string 类型
+      questionInfoTotal[key].answer += "";
+      questionInfoTotal[key].score = parseInt(questionInfoTotal[key].answer);
+      totalPoints += questionInfoTotal[key].score;
       // if (questionInfoTotal[key].score > 2) {
       //   obstacle += 1;
       // }
