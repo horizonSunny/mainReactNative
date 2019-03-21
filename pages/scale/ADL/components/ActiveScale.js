@@ -81,6 +81,14 @@ export default class ActiveScale extends React.Component {
   };
   goNext = () => {
     this.nextTimer && clearTimeout(this.nextTimer);
+    const qusName = questionDisplay[this.state.questionCurrentIndex]["name"];
+    console.log("qusName_", qusName);
+    const noEmpty = this.state.questionInfo[qusName]["answer"] === "";
+    if (noEmpty) {
+      androidToast("请选择选项");
+      return;
+    }
+    // this is
     if (this.state.questionCurrentIndex === questionDisplay.length - 1) {
       const calculateResult = this.calculate();
       save(calculateResult, this.props.rootStore);
@@ -125,7 +133,11 @@ export default class ActiveScale extends React.Component {
     } else {
       status = "不正常";
     }
-    const ADL = { questionInfoTotal, status, totalPoints };
+    const ADL = {
+      assessmentAnswer: questionInfoTotal,
+      result: status,
+      score: totalPoints
+    };
     return ADL;
   };
   render() {

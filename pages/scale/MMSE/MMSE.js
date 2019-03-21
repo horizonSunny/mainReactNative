@@ -133,7 +133,11 @@ export default class MMSE extends React.Component {
       status = "重度";
     }
     // this.props.rootStore.setReportData(reportData)
-    const MMSE = { questionInfoTotal, status, totalPoints };
+    const MMSE = {
+      assessmentAnswer: questionInfoTotal,
+      result: status,
+      score: totalPoints
+    };
     return MMSE;
   };
 
