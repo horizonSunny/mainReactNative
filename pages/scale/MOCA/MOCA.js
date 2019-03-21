@@ -19,7 +19,6 @@ import { inject } from "mobx-react";
 // import Read from "./components/Read";
 // import Understand from "./components/Understand";
 // import Write from "./components/Write";
-// import ViewSpace from "./components/ViewSpace";
 // import DelayRecall from "./components/DelayRecall";
 // 量表
 import { save } from "../routeAndSave";
@@ -74,15 +73,17 @@ export default class MOCA extends React.Component {
     });
   };
   renderQuestionPage() {
-    <View>
-      {/* {this.state.questionModelIndex === 0 && (
+    {
+      /* <View>
+      {this.state.questionModelIndex === 0 && (
         <ViewSpace
           questionModel={this.state.viewSpace}
           directionForward={this.state.directionForward}
           callBack={this.childrenInfo}
         />
-      )} */}
-    </View>;
+      )}
+    </View>; */
+    }
   }
   renderHomePage() {
     return (

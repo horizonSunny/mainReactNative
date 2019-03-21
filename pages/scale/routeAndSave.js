@@ -1,5 +1,7 @@
 import http from "../../utils/http/index";
 import * as message from "./scaleMessage";
+import axios from "axios";
+
 export function save(calculateResult, rootStore) {
   console.log("calculateResult_", calculateResult, "_rootStore_", rootStore);
   const scaleScheduleIndex = rootStore.scaleCurrentIndex;
@@ -26,6 +28,7 @@ export function save(calculateResult, rootStore) {
     .catch(function(error) {
       console.log("error_", error);
     });
+
   // if (scaleScheduleIndex < scaleScheduleLength) {
   //   console.log("goToNext");
   //   rootStore.setScaleIndex(scaleScheduleIndex + 1);

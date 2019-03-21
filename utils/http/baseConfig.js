@@ -18,17 +18,17 @@ const CONFIG = {
       return "";
     }
     return params && Qs.stringify(params);
-  },
-  transformRequest: [
-    function(data, headers) {
-      if (data === undefined) return;
-      // Do whatever you want to transform the data
-      //对 data 进行任意转换处理
-      const query = Object.keys(data)
-        .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
-        .join("&");
-      return query;
-    }
-  ]
+  }
+  // transformRequest: [
+  //   function(data, headers) {
+  //     if (data === undefined) return;
+  //     // Do whatever you want to transform the data
+  //     //对 data 进行任意转换处理
+  //     // const query = Object.keys(data)
+  //     //   .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+  //     //   .join("&");
+  //     return data;
+  //   }
+  // ]
 };
 export { CONFIG };
