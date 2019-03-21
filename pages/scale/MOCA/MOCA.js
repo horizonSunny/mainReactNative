@@ -11,7 +11,8 @@ import ButtonImg from "../../../components/ButtonImg/ButtonImg";
 import DoctorHelpWaring from "../../PageComponent/DoctorHelpWaring/DoctorHelpWaring";
 import { inject } from "mobx-react";
 // 量表的各个问题模块
-// import ViewSpace from "./components/ViewSpace/ViewSpace";
+import ViewSpace from "./components/ViewSpace/ViewSpace.js";
+import Canvas from "../../../../components/Canvas/Canvas";
 // import ImmediatelyRecall from "./components/ImmediatelyRecall";
 // import CalculAteattention from "./components/CalculAteattention";
 // import Named from "./components/Named";
