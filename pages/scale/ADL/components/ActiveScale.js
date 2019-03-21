@@ -22,10 +22,12 @@ import androidToast from "../../../PageComponent/AndroidToast/AndroidToast";
 import * as commonFunction from "../../../PageComponent/commonFunction/commonFunction";
 import { questionDisplay } from "./questionInfo";
 import ActiveItem from "./ActiveItem";
+import { inject } from "mobx-react";
 // tools
 import { objectClone } from "../../../../utils/objectClone";
-// import { save } from "../../routeAndSave";
+import { save } from "../../routeAndSave";
 
+@inject("rootStore")
 export default class ActiveScale extends React.Component {
   constructor(props) {
     super(props);
