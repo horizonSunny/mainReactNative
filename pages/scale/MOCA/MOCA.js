@@ -11,7 +11,7 @@ import ButtonImg from "../../../components/ButtonImg/ButtonImg";
 import DoctorHelpWaring from "../../PageComponent/DoctorHelpWaring/DoctorHelpWaring";
 import { inject } from "mobx-react";
 // 量表的各个问题模块
-import ViewSpace from "./components/ViewSpace.js/index.js.js.js";
+import ViewSpace from "./components/ViewSpace.js";
 // import ImmediatelyRecall from "./components/ImmediatelyRecall";
 // import CalculAteattention from "./components/CalculAteattention";
 // import Named from "./components/Named";
@@ -51,8 +51,12 @@ export default class MOCA extends React.Component {
       questionModelNum: questionModelArr.length,
       questionModelIndex: 0,
       // 表示该模块是走正序还是反序
-      directionForward: false
+      directionForward: false,
       // 各个问题模块的答案
+      // 各个问题模块的答案
+      viewSpace: {
+        questionInfo: ""
+      }
     };
   }
 
@@ -67,23 +71,29 @@ export default class MOCA extends React.Component {
 
   // 必须绑定一个函数,设置不是首页，让取第一个测评问题模块页面
   startMeasurement = () => {
-    this.setState({
-      homePage: false,
-      directionForward: false
-    });
+    this.setState(
+      {
+        homePage: false,
+        directionForward: false
+      },
+      () => {
+        console.log("this.state.homePage_", this.state.homePage);
+      }
+    );
   };
   renderQuestionPage() {
-    {
-      /* <View>
-      {this.state.questionModelIndex === 0 && (
-        <ViewSpace
-          questionModel={this.state.viewSpace}
-          directionForward={this.state.directionForward}
-          callBack={this.childrenInfo}
-        />
-      )}
-    </View>; */
-    }
+    return (
+      <View>
+        {this.state.questionModelIndex === 0 && (
+          <ViewSpace
+            questionModel={this.state.viewSpace}
+            directionForward={this.state.directionForward}
+            callBack={this.childrenInfo}
+          />
+        )}
+        {/* <Text>123</Text> */}
+      </View>
+    );
   }
   renderHomePage() {
     return (

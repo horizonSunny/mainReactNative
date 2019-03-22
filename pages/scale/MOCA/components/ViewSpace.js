@@ -19,6 +19,8 @@ import * as commonFunction from "../../../PageComponent/commonFunction/commonFun
 import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
 import FrontAndBack from "../../../PageComponent/frontAndBack/frontAndBack";
 
+import { styles } from "../../../../../assets/css/common";
+
 export default class ViewSpace extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +34,7 @@ export default class ViewSpace extends Component {
       totalScore: 0
     };
   }
+  canvas = React.createRef();
   componentWillMount() {
     let answerModel = {
       score: 0,
@@ -101,14 +104,18 @@ export default class ViewSpace extends Component {
               />
               <View
                 style={{
-                  width: dp(800),
+                  width: dp(1000),
                   marginTop: dp(-570),
                   justifyContent: "center",
-                  textAlign: "center"
+                  textAlign: "center",
+                  alignItems: "center"
                 }}
               >
                 <Text style={[styles.questionText, { width: "100%" }]}>
-                  1-1.请您按照1甲2乙3丙4丁5戊的顺序连线
+                  1-1.请您按照
+                  <Text style={{ color: "black", fontSize: font(40) }}>
+                    (1甲2乙3丙4丁5戊的顺序连线)
+                  </Text>
                 </Text>
               </View>
               <View style={{ justifyContent: "center" }} />
@@ -121,19 +128,25 @@ export default class ViewSpace extends Component {
                 marginTop: dp(60)
               }}
             >
-              <KeyBoardNumber
+              {/* <KeyBoardNumber
                 onEnsure={this.goNext.bind(this, "thisYear")}
                 onChangeText={this.keyBoardChange.bind(this, "thisYear")}
                 scu={false}
+              /> */}
+              <Canvas
+                getBase64={this.getBase64}
+                ref={this.canvas}
+                strokeWidth={1}
+                canvasStyle={{
+                  width: dp(1300),
+                  height: dp(700)
+                }}
               />
             </View>
+            <View style={{ alignItems: "center", marginTop: dp(100) }} />
             <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
           </View>
         )}
-        {this.state.questionIndex === 1}&&
-        <View />
-        {this.state.questionIndex === 2}&&
-        <View />
       </React.Fragment>
     );
   }
