@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {
   View,
   Text,
+  ART,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -20,7 +21,18 @@ import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
 import FrontAndBack from "../../../PageComponent/frontAndBack/frontAndBack";
 
 import { styles } from "../../../../../assets/css/common";
+import { DrawNumberCircle } from "../../../../utils/drawNumberCircle";
+import ligatureCoordinate from "./ligatureCoordinate";
 
+let {
+  Surface, //  一个矩形可渲染的区域，是其他元素的容器
+  Group, // 可容纳多个形状、文本和其他的分组
+  Shape, // 形状定义，可填充
+  Path, // 路径
+  LinearGradient, // 渐变色
+  Pattern, // 填充图片
+  ClippingRectangle // 剪辑
+} = ART;
 export default class ViewSpace extends Component {
   constructor(props) {
     super(props);
@@ -87,6 +99,8 @@ export default class ViewSpace extends Component {
   };
   calculateScore = () => {};
   render() {
+    // const ligatureCoordinate = ligatureCoordinate
+    console.log("ligatureCoordinate_", ligatureCoordinate[0]["text"]);
     return (
       <React.Fragment>
         {this.state.questionIndex === 0 && (
@@ -128,11 +142,6 @@ export default class ViewSpace extends Component {
                 marginTop: dp(60)
               }}
             >
-              {/* <KeyBoardNumber
-                onEnsure={this.goNext.bind(this, "thisYear")}
-                onChangeText={this.keyBoardChange.bind(this, "thisYear")}
-                scu={false}
-              /> */}
               <Canvas
                 getBase64={this.getBase64}
                 ref={this.canvas}
@@ -141,7 +150,18 @@ export default class ViewSpace extends Component {
                   width: dp(1300),
                   height: dp(700)
                 }}
-              />
+              >
+                {ligatureCoordinate.map((item, index) => {
+                  return (
+                    <DrawNumberCircle
+                      key={index}
+                      circle={item["circle"]}
+                      text={item["text"]}
+                    />
+                  );
+                })}
+              </Canvas>
+              {/* 预留画子canvas的地方 */}
             </View>
             <View style={{ alignItems: "center", marginTop: dp(100) }} />
             <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
