@@ -139,7 +139,8 @@ export default class ViewSpace extends Component {
                 alignItems: "center",
                 flexDirection: "row",
                 justifyContent: "center",
-                marginTop: dp(60)
+                marginTop: dp(60),
+                height: dp(700)
               }}
             >
               <Canvas
@@ -161,7 +162,6 @@ export default class ViewSpace extends Component {
                   );
                 })}
               </Canvas>
-              {/* 预留画子canvas的地方 */}
             </View>
             <View style={{ alignItems: "center", marginTop: dp(100) }} />
             <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
