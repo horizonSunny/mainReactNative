@@ -20,19 +20,11 @@ import * as commonFunction from "../../../PageComponent/commonFunction/commonFun
 import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
 import FrontAndBack from "../../../PageComponent/frontAndBack/frontAndBack";
 
-import { styles } from "../../../../../assets/css/common";
+import styles from "../../../../../assets/css/common";
 import { DrawNumberCircle } from "../../../../utils/drawNumberCircle";
 import ligatureCoordinate from "./ligatureCoordinate";
+import AnswerConfirm from "./AnswerConfirm";
 
-let {
-  Surface, //  一个矩形可渲染的区域，是其他元素的容器
-  Group, // 可容纳多个形状、文本和其他的分组
-  Shape, // 形状定义，可填充
-  Path, // 路径
-  LinearGradient, // 渐变色
-  Pattern, // 填充图片
-  ClippingRectangle // 剪辑
-} = ART;
 export default class ViewSpace extends Component {
   constructor(props) {
     super(props);
@@ -42,11 +34,10 @@ export default class ViewSpace extends Component {
     };
     this.state = {
       questionModel: "directiveForce",
-      questionIndex: this.props.directionForward ? 9 : 0,
+      questionIndex: this.props.directionForward ? 5 : 0,
       totalScore: 0
     };
   }
-  canvas = React.createRef();
   componentWillMount() {
     let answerModel = {
       score: 0,
@@ -63,6 +54,9 @@ export default class ViewSpace extends Component {
       this.setState({ questionInfo: this.props.questionModel["questionInfo"] });
     }
   }
+  canvasLigature = React.createRef();
+  canvasCube = React.createRef();
+  canvasHorologe = React.createRef();
   // 调用keyboard回调的方法
   keyBoardChange = (key, value) => {
     // console.log('key_'+ key +'_answer_'+value);
@@ -98,6 +92,36 @@ export default class ViewSpace extends Component {
     });
   };
   calculateScore = () => {};
+  getBase64 = base64 => {
+    console.log("123_", base64);
+    switch (this.state.questionIndex) {
+      case 0:
+        this.setState({
+          ligatureImg: base64,
+          questionIndex: this.state.questionIndex + 1
+        });
+        break;
+      case 2:
+        this.setState({
+          cubeImg: base64,
+          questionIndex: this.state.questionIndex + 1
+        });
+        break;
+      case 4:
+        this.setState({
+          horologeImg: base64,
+          questionIndex: this.state.questionIndex + 1
+        });
+        break;
+    }
+  };
+
+  // html 转 img 图片测试
+  takeToImage() {
+    ReactNative.takeSnapshot(this.refs.location, { format: "png", quality: 1 })
+      .then(uri => this.setState({ uri: uri }))
+      .catch(error => alert(error));
+  }
   render() {
     // const ligatureCoordinate = ligatureCoordinate
     console.log("ligatureCoordinate_", ligatureCoordinate[0]["text"]);
@@ -110,8 +134,7 @@ export default class ViewSpace extends Component {
                 backgroundColor: "#fff",
                 marginTop: dp(50),
                 alignItems: "center"
-              }}
-            >
+              }}>
               <PageOrderCode
                 index={this.state.questionIndex + 1}
                 indexTotal={19}
@@ -123,8 +146,7 @@ export default class ViewSpace extends Component {
                   justifyContent: "center",
                   textAlign: "center",
                   alignItems: "center"
-                }}
-              >
+                }}>
                 <Text style={[styles.questionText, { width: "100%" }]}>
                   1-1.请您按照
                   <Text style={{ color: "black", fontSize: font(40) }}>
@@ -141,17 +163,15 @@ export default class ViewSpace extends Component {
                 justifyContent: "center",
                 marginTop: dp(60),
                 height: dp(700)
-              }}
-            >
+              }}>
               <Canvas
                 getBase64={this.getBase64}
-                ref={this.canvas}
+                ref={this.canvasLigature}
                 strokeWidth={1}
                 canvasStyle={{
                   width: dp(1300),
                   height: dp(700)
-                }}
-              >
+                }}>
                 {ligatureCoordinate.map((item, index) => {
                   return (
                     <DrawNumberCircle
@@ -164,7 +184,238 @@ export default class ViewSpace extends Component {
               </Canvas>
             </View>
             <View style={{ alignItems: "center", marginTop: dp(100) }} />
-            <FrontAndBack goNext={this.goNext} goPrev={this.goPrev} />
+            <FrontAndBack
+              goNext={() => {
+                this.canvasLigature.current.buildImg();
+              }}
+              goPrev={this.goPrev}
+            />
+          </View>
+        )}
+        {this.state.questionIndex === 1 && (
+          <View ref="location">
+            <View style={{ alignItems: "center" }}>
+              <View style={{ width: dp(1000), height: dp(500) }}>
+                {this.state.ligatureImg && (
+                  <Image
+                    source={{ uri: this.state.ligatureImg }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "rgb(240,240,240)",
+                      resizeMode: "cover"
+                    }}
+                  />
+                )}
+              </View>
+              <View style={{ alignItems: "center", marginTop: dp(50) }} />
+              <AnswerConfirm
+                questionType={"ligature"}
+                questionInfo={this.state.questionInfo}
+                keyBoardChange={this.keyBoardChange}
+              />
+            </View>
+            <View style={{ alignItems: "center", marginTop: dp(50) }} />
+            <FrontAndBack
+              goNext={() => {
+                this.setState({
+                  questionIndex: ++this.state.questionIndex
+                });
+              }}
+              goPrev={() => {
+                this.setState({
+                  questionIndex: --this.state.questionIndex
+                });
+              }}
+            />
+          </View>
+        )}
+        {this.state.questionIndex === 2 && (
+          <View style={{ marginTop: dp(30) }}>
+            <View
+              style={{
+                backgroundColor: "#fff",
+                marginTop: dp(50),
+                alignItems: "center"
+              }}>
+              <PageOrderCode
+                index={this.state.questionIndex + 1}
+                indexTotal={19}
+              />
+              <View
+                style={{
+                  width: dp(1000),
+                  marginTop: dp(-570),
+                  justifyContent: "center",
+                  textAlign: "center",
+                  alignItems: "center"
+                }}>
+                <Text style={[styles.questionText, { width: "100%" }]}>
+                  1-2.请画一个立方体
+                  <Text style={{ color: "black", fontSize: font(40) }}>
+                    (视空间与执行能力)
+                  </Text>
+                </Text>
+              </View>
+              <View style={{ justifyContent: "center" }} />
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: dp(60),
+                height: dp(700)
+              }}>
+              <Canvas
+                getBase64={this.getBase64}
+                ref={this.canvasCube}
+                strokeWidth={1}
+                canvasStyle={{
+                  width: dp(1300),
+                  height: dp(700)
+                }}
+              />
+            </View>
+            <View style={{ alignItems: "center", marginTop: dp(100) }} />
+            <FrontAndBack
+              goNext={() => {
+                this.canvasCube.current.buildImg();
+              }}
+              goPrev={this.goPrev}
+            />
+          </View>
+        )}
+        {this.state.questionIndex === 3 && (
+          <View>
+            <View style={{ alignItems: "center" }}>
+              <View style={{ width: dp(1000), height: dp(500) }}>
+                {this.state.cubeImg && (
+                  <Image
+                    source={{ uri: this.state.cubeImg }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "rgb(240,240,240)",
+                      resizeMode: "cover"
+                    }}
+                  />
+                )}
+              </View>
+              <View style={{ alignItems: "center", marginTop: dp(50) }} />
+              <AnswerConfirm
+                questionType={"cube"}
+                questionInfo={this.state.questionInfo}
+                keyBoardChange={this.keyBoardChange}
+              />
+            </View>
+            <View style={{ alignItems: "center", marginTop: dp(50) }} />
+            <FrontAndBack
+              goNext={() => {
+                this.setState({
+                  questionIndex: ++this.state.questionIndex
+                });
+              }}
+              goPrev={() => {
+                this.setState({
+                  questionIndex: --this.state.questionIndex
+                });
+              }}
+            />
+          </View>
+        )}
+        {this.state.questionIndex === 4 && (
+          <View style={{ marginTop: dp(30) }}>
+            <View
+              style={{
+                backgroundColor: "#fff",
+                marginTop: dp(50),
+                alignItems: "center"
+              }}>
+              <PageOrderCode
+                index={this.state.questionIndex + 1}
+                indexTotal={19}
+              />
+              <View
+                style={{
+                  width: dp(1000),
+                  marginTop: dp(-570),
+                  justifyContent: "center",
+                  textAlign: "center",
+                  alignItems: "center"
+                }}>
+                <Text style={[styles.questionText, { width: "100%" }]}>
+                  1-2.画钟表
+                  <Text style={{ color: "black", fontSize: font(40) }}>
+                    (11点15分)
+                  </Text>
+                </Text>
+              </View>
+              <View style={{ justifyContent: "center" }} />
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: dp(60),
+                height: dp(700)
+              }}>
+              <Canvas
+                getBase64={this.getBase64}
+                ref={this.canvasHorologe}
+                strokeWidth={1}
+                canvasStyle={{
+                  width: dp(1300),
+                  height: dp(700)
+                }}
+              />
+            </View>
+            <View style={{ alignItems: "center", marginTop: dp(100) }} />
+            <FrontAndBack
+              goNext={() => {
+                this.canvasHorologe.current.buildImg();
+              }}
+              goPrev={this.goPrev}
+            />
+          </View>
+        )}
+        {this.state.questionIndex === 5 && (
+          <View>
+            <View style={{ alignItems: "center" }}>
+              <View style={{ width: dp(1000), height: dp(500) }}>
+                {this.state.horologeImg && (
+                  <Image
+                    source={{ uri: this.state.horologeImg }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "rgb(240,240,240)",
+                      resizeMode: "cover"
+                    }}
+                  />
+                )}
+              </View>
+              <View style={{ alignItems: "center", marginTop: dp(50) }} />
+              <AnswerConfirm
+                questionType={"horologe"}
+                questionInfo={this.state.questionInfo}
+                keyBoardChange={this.keyBoardChange}
+              />
+            </View>
+            <View style={{ alignItems: "center", marginTop: dp(50) }} />
+            <FrontAndBack
+              goNext={() => {
+                this.setState({
+                  questionIndex: ++this.state.questionIndex
+                });
+              }}
+              goPrev={() => {
+                this.setState({
+                  questionIndex: --this.state.questionIndex
+                });
+              }}
+            />
           </View>
         )}
       </React.Fragment>
