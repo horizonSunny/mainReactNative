@@ -116,12 +116,6 @@ export default class ViewSpace extends Component {
     }
   };
 
-  // html 转 img 图片测试
-  takeToImage() {
-    ReactNative.takeSnapshot(this.refs.location, { format: "png", quality: 1 })
-      .then(uri => this.setState({ uri: uri }))
-      .catch(error => alert(error));
-  }
   render() {
     // const ligatureCoordinate = ligatureCoordinate
     console.log("ligatureCoordinate_", ligatureCoordinate[0]["text"]);
@@ -193,7 +187,7 @@ export default class ViewSpace extends Component {
           </View>
         )}
         {this.state.questionIndex === 1 && (
-          <View ref="location">
+          <View>
             <View style={{ alignItems: "center" }}>
               <View style={{ width: dp(1000), height: dp(500) }}>
                 {this.state.ligatureImg && (
