@@ -64,14 +64,10 @@ export default class Audio extends React.PureComponent {
       <React.Fragment>
         <ButtonImg
           onPress={this.handlePress}
-          style={{ width: dp(230), height: dp(230), marginLeft: dp(80) }}
+          style={{ width: dp(230), height: dp(230) }}
           source={this.state.audioIcon}
         />
-        <Text
-          style={{ fontSize: font(30), color: "#479e13", marginLeft: dp(50) }}
-        >
-          点击播放
-        </Text>
+        <Text style={{ fontSize: font(30), color: "#479e13" }}>点击播放</Text>
       </React.Fragment>
     );
   }

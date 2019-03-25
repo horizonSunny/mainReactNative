@@ -41,6 +41,7 @@ export default class DoctorHelpConfirm extends React.Component {
             </Text>
           </View>
         </View>
+        {}
         <View
           style={{
             alignItems: "center",

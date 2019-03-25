@@ -19,7 +19,7 @@ import { objectClone } from "../../../../utils/objectClone";
 import * as commonFunction from "../../../PageComponent/commonFunction/commonFunction";
 import PageOrderCode from "../../../PageComponent/PageOrderCode/PageOrderCode";
 import FrontAndBack from "../../../PageComponent/frontAndBack/frontAndBack";
-
+import Audio from "../../../../components/Audio/Audio";
 import styles from "../../../../../assets/css/common";
 import { DrawNumberCircle } from "../../../../utils/drawNumberCircle";
 import ligatureCoordinate from "./ViewSpaceComponent/ligatureCoordinate";
@@ -111,8 +111,6 @@ export default class ViewSpace extends Component {
   };
 
   render() {
-    // const ligatureCoordinate = ligatureCoordinate
-    console.log("ligatureCoordinate_", ligatureCoordinate[0]["text"]);
     return (
       <React.Fragment>
         {this.state.questionIndex === 0 && (
@@ -120,31 +118,44 @@ export default class ViewSpace extends Component {
             <View
               style={{
                 backgroundColor: "#fff",
-                marginTop: dp(50),
-                alignItems: "center"
+                marginTop: dp(50)
               }}
             >
               <PageOrderCode
+                backgroundColor={"green"}
                 index={this.state.questionIndex + 1}
                 indexTotal={19}
               />
               <View
                 style={{
-                  width: dp(1000),
+                  flexDirection: "row",
+                  width: dp(1300),
+                  alignItems: "center",
                   marginTop: dp(-570),
-                  justifyContent: "center",
-                  textAlign: "center",
-                  alignItems: "center"
+                  marginLeft: dp(300)
                 }}
               >
-                <Text style={[styles.questionText, { width: "100%" }]}>
+                <Text style={[styles.questionText, { width: "80%" }]}>
                   1-1.请您按照
                   <Text style={{ color: "black", fontSize: font(40) }}>
                     (1甲2乙3丙4丁5戊的顺序连线)
                   </Text>
                 </Text>
               </View>
-              <View style={{ justifyContent: "center" }} />
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderLeftColor: "#ddd",
+                  position: "absolute",
+                  right: dp(50),
+                  height: dp(200),
+                  width: dp(200)
+                }}
+              >
+                <Audio src="Moca4-6.m4a" />
+              </View>
             </View>
             <View
               style={{
@@ -152,7 +163,8 @@ export default class ViewSpace extends Component {
                 flexDirection: "row",
                 justifyContent: "center",
                 marginTop: dp(60),
-                height: dp(700)
+                height: dp(700),
+                zIndex: 999
               }}
             >
               <Canvas
