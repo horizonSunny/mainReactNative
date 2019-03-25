@@ -1,8 +1,8 @@
 import { Text, View, StyleSheet } from "react-native";
 import { Image } from "react-native/Libraries/Animated/src/Animated";
-import Radio from "../../../../components/Radio/src/Radio";
+import Radio from "../../../../../components/Radio/src/Radio";
 import React from "react";
-import styles from "../../../../../assets/css/common";
+import styles from "../../../../../../assets/css/common";
 
 export default class AnswerConfirm extends React.Component {
   constructor(props) {
@@ -15,11 +15,12 @@ export default class AnswerConfirm extends React.Component {
           flexDirection: "row",
           height: dp(320),
           alignItems: "center"
-        }}>
+        }}
+      >
         <View style={styles.tableColumn1}>
           <Image
             style={{ width: dp(250), height: dp(320) }}
-            source={require("./img/doctor1.png")}
+            source={require("../img/doctor1.png")}
           />
         </View>
         <View>
@@ -37,7 +38,8 @@ export default class AnswerConfirm extends React.Component {
               onChange={this.props.keyBoardChange.bind(
                 this,
                 this.props.questionType
-              )}>
+              )}
+            >
               <View style={[styles.td, { width: dp(600) }]}>
                 <Radio value={1} style={styles.radio} />
               </View>

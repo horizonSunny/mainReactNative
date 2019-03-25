@@ -22,8 +22,8 @@ import FrontAndBack from "../../../PageComponent/frontAndBack/frontAndBack";
 
 import styles from "../../../../../assets/css/common";
 import { DrawNumberCircle } from "../../../../utils/drawNumberCircle";
-import ligatureCoordinate from "./ViewSpaceComponent/ligatureCoordinate";
-import AnswerConfirm from "./ViewSpaceComponent/AnswerConfirm";
+import ligatureCoordinate from "./ligatureCoordinate";
+import AnswerConfirm from "./AnswerConfirm";
 
 export default class ViewSpace extends Component {
   constructor(props) {
